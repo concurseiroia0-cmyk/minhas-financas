@@ -1,4 +1,4 @@
-const TIMEOUT_MS = 15000
+const TIMEOUT_MS = 30000
 
 // Provedores — chaves e modelos vêm do build (src/config/ai.js)
 import { CHAVES, MODELOS } from '../config/ai.js'
@@ -100,7 +100,9 @@ export async function askAI({ system, user, json = true, settings }) {
       })
       if (!r.ok) throw new Error(`${nome} HTTP ${r.status}`)
       const data = await r.json()
-      const conteudo = data?.choices?.[0]?.message?.content
+      const msg = data?.choices?.[0]?.message
+      // modelos de raciocínio às vezes deixam content vazio e respondem em reasoning
+      const conteudo = msg?.content || msg?.reasoning || ''
       if (!conteudo) throw new Error(`${nome}: resposta sem conteúdo`)
       return json ? parseJSONSeguro(conteudo) : conteudo
     } catch (e) {

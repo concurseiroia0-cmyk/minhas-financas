@@ -30,13 +30,15 @@ Contexto do usuário (gastos parecidos): ${contexto || 'nenhum'}
 Responda APENAS JSON: {"categoria": string, "confianca": number}
 Não invente categoria fora da lista.`
 
-export const PROMPT_RESUMO = (dadosJSON) => `Você é um assistente financeiro objetivo e não julgador.
-Escreva um resumo em português (máx. 120 palavras) com base APENAS nos dados abaixo.
+export const PROMPT_RESUMO = (dadosJSON) => `Você é um analista financeiro pessoal objetivo e não julgador.
+Escreva um RELATÓRIO da semana em português (máx. 140 palavras) com base APENAS nos dados abaixo.
 Não invente números. Não dê conselho de investimento.
-Estrutura: 1 frase de visão geral, 2 destaques, 1 observação de tendência.
-Converta um gasto relevante em horas de trabalho usando valorHora.
-
-DADOS: ${dadosJSON}`
+Estrutura:
+1. Visão geral: total gasto e média diária.
+2. Destaques por categoria: cite a maior e mais uma, com a variação (delta) em relação à semana anterior.
+3. O maior gasto individual, convertido em horas de trabalho usando valorHora.
+4. Feche com 1 observação de tendência prática.
+Texto corrido, sem tópicos, sem markdown.`
 
 export const PROMPT_SUGESTOES = (dadosJSON) => `Analise os padrões abaixo e gere 3 sugestões de economia.
 Cada sugestão deve ter: título curto, ação concreta, economia mensal estimada

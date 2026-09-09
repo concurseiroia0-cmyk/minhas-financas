@@ -6,7 +6,7 @@ import { EmptyState } from './ui.jsx'
  * arco principal grosso com glow amarelo (maior categoria),
  * arcos finos concêntricos externos + guias escuras, abertura embaixo.
  */
-export function GraficoCategoria({ dados }) {
+export function GraficoCategoria({ dados, labelTotal = 'Total do mês' }) {
   const comValor = (dados || []).filter((d) => d.valor > 0).sort((a, b) => b.valor - a.valor)
   if (!comValor.length) return <EmptyState titulo="Sem gastos neste período" sub="Registre transações para ver o gráfico" />
   const total = comValor.reduce((a, d) => a + d.valor, 0)
@@ -27,7 +27,7 @@ export function GraficoCategoria({ dados }) {
       <div className="h-60 relative">
         <GaugeSvg arcos={arcos} />
         <div className="absolute inset-x-0 bottom-2 flex flex-col items-center pointer-events-none">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Total do mês</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">{labelTotal}</span>
           <span className="text-2xl font-extrabold tracking-tight">{fmtMoney(total)}</span>
         </div>
       </div>
