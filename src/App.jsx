@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Plus, LayoutDashboard, ListOrdered, CreditCard, Repeat, Calculator, ChartPie, Settings2, Sparkles, Building2 } from 'lucide-react'
+import { Plus, LayoutDashboard, ListOrdered, CreditCard, Repeat, Calculator, ChartPie, Settings2, Building2 } from 'lucide-react'
 import { db } from './db/schema.js'
 import { useSettings, carregarDadosDemo } from './store/useSettings.js'
 import { BadgeOffline } from './components/ui.jsx'
@@ -70,9 +70,12 @@ export default function App() {
       {/* Sidebar desktop */}
       {!hideNav && (
         <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r border-slate-800 bg-slate-950/80 backdrop-blur px-3 py-4 z-30">
-          <div className="px-2 mb-6">
-            <p className="font-extrabold text-lg tracking-tight">💰 Minhas Finanças</p>
-            <p className="text-xs text-slate-500">offline-first</p>
+          <div className="px-2 mb-6 flex items-center gap-2.5">
+            <ChefIcon className="h-9 w-9 shrink-0" animado={false} />
+            <div>
+              <p className="font-extrabold text-lg tracking-tight leading-tight">Minhas Finanças</p>
+              <p className="text-xs text-slate-500">offline-first</p>
+            </div>
           </div>
           <nav className="flex-1 space-y-0.5">
             {NAV.map(({ to, label, icon: Icon }) => (
@@ -144,7 +147,7 @@ function QuickAddFAB() {
   return (
     <NavLink to="/quickadd" state={{ quickAdd: true }}
       className="hidden md:flex fixed bottom-6 right-6 z-40 h-14 px-5 rounded-full bg-[#f6d353] text-slate-950 shadow-xl shadow-[#f6d353]/20 items-center gap-2 font-bold hover:bg-[#f2c62e] transition-colors">
-      <Sparkles className="h-5 w-5" /> Adicionar
+      <ChefIcon className="h-7 w-7 shrink-0" cor="#0a0a0c" corOlhos="#f6d353" animado={false} /> Adicionar
     </NavLink>
   )
 }
