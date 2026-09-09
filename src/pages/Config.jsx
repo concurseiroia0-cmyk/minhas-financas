@@ -4,8 +4,9 @@ import { db } from '../db/schema.js'
 import { useSettings } from '../store/useSettings.js'
 import { exportarJSON, importarJSON, resetarTudo, salvarCategoria, excluirCategoria } from '../db/repo.js'
 import { temChaveIA, MODELOS } from '../config/ai.js'
+import { estadoPermissao, pedirPermissao, notificar, verificarVencimentos } from '../core/notifications.js'
 import { Card, PageHeader, Field, inputCls, ConfirmDialog, Badge } from '../components/ui.jsx'
-import { Cpu, Palette, Tags, Database, Download, Upload, Trash2, Plus, ShieldCheck } from 'lucide-react'
+import { Cpu, Palette, Tags, Database, Download, Upload, Trash2, Plus, ShieldCheck, Bell } from 'lucide-react'
 
 export default function Config() {
   const settings = useSettings()
@@ -15,6 +16,7 @@ export default function Config() {
   const [novaCat, setNovaCat] = useState('')
   const [confirmarReset, setConfirmarReset] = useState(false)
   const [importMsg, setImportMsg] = useState(null)
+  const [permissao, setPermissao] = useState(estadoPermissao())
 
   async function exportar() {
     const data = await exportarJSON()
@@ -80,6 +82,46 @@ export default function Config() {
           As chaves já estão configuradas neste app. Os dados das suas transações nunca são enviados — só o texto
           que você digitar no QuickAdd e números agregados dos relatórios.
         </p>
+      </Card>
+
+      {/* Notificações */}
+      <Card className="p-4 mb-3">
+        <p className="text-sm font-semibold flex items-center gap-1.5 mb-3"><Bell className="h-4 w-4 text-[#f6d353]" /> Notificações</p>
+        {permissao === 'granted' ? (
+          <>
+            <Badge className="bg-[#f6d353]/15 text-[#f6d353]">✓ Ativadas</Badge>
+            <p className="text-xs text-slate-400 mt-2 mb-3">
+              Você será avisado quando uma fatura ou conta recorrente vencer (1 dia antes e no dia).
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => notificar('Teste de notificação 🔔', 'Está funcionando! Você será avisado dos vencimentos.', 'teste')}
+                className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-700 hover:bg-slate-800">
+                Enviar teste
+              </button>
+              <button onClick={() => verificarVencimentos({ forcar: true })}
+                className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-700 hover:bg-slate-800">
+                Verificar vencimentos agora
+              </button>
+            </div>
+          </>
+        ) : permissao === 'denied' ? (
+          <>
+            <Badge className="bg-rose-500/15 text-rose-400">✕ Bloqueadas</Badge>
+            <p className="text-xs text-slate-400 mt-2">
+              As notificações foram bloqueadas nas configurações do navegador. Para ativar: toque no ícone 🔒/ⓘ ao lado do endereço do site → Notificações → Permitir.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-slate-400 mb-3">
+              Receba um aviso no celular quando a fatura do cartão ou uma conta recorrente estiver para vencer.
+            </p>
+            <button onClick={async () => setPermissao(await pedirPermissao())}
+              className="rounded-xl px-4 py-2.5 text-sm font-bold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">
+              🔔 Ativar notificações
+            </button>
+          </>
+        )}
       </Card>
 
       {/* Aparência */}

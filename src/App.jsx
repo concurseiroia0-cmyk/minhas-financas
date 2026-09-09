@@ -5,6 +5,8 @@ import { Plus, LayoutDashboard, ListOrdered, CreditCard, Repeat, Calculator, Cha
 import { db } from './db/schema.js'
 import { useSettings, carregarDadosDemo } from './store/useSettings.js'
 import { BadgeOffline } from './components/ui.jsx'
+import { ChefIcon } from './components/ChefIcon.jsx'
+import { agendarChecagemDiaria } from './core/notifications.js'
 import Dashboard from './pages/Dashboard.jsx'
 import Lancamentos from './pages/Lancamentos.jsx'
 import QuickAdd from './pages/QuickAdd.jsx'
@@ -42,10 +44,15 @@ export default function App() {
     }
   }, [loaded, pronto])
 
+  useEffect(() => {
+    if (loaded && pronto) agendarChecagemDiaria()
+  }, [loaded, pronto])
+
   if (!loaded || !pronto) {
     return (
-      <div className="min-h-dvh flex items-center justify-center">
-        <div className="animate-pulse text-slate-500">Carregando…</div>
+      <div className="min-h-dvh flex flex-col items-center justify-center gap-4">
+        <ChefIcon className="h-24 w-24" />
+        <p className="text-sm text-slate-500 animate-pulse">Organizando suas finanças…</p>
       </div>
     )
   }

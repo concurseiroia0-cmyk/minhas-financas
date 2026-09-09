@@ -1,5 +1,5 @@
 // Gera public/icons/*.png sem dependências: encoder PNG mínimo (zlib do Node).
-// Design: fundo preto ink, barras ascendentes amarelo manteiga + moeda.
+// Design: fundo preto ink + chapéu de chef amarelo com olhos (ícone do app).
 import { deflateSync } from 'node:zlib'
 import { mkdirSync, writeFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -38,68 +38,82 @@ const chunk = (type, data) => {
   crc.writeUInt32BE(crc32(body))
   return Buffer.concat([len, body, crc])
 }
-function encodePNG(w, h, rgb) {
+function encodePNG(w, h, rgba) {
   const sig = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
   const ihdr = Buffer.alloc(13)
   ihdr.writeUInt32BE(w, 0)
   ihdr.writeUInt32BE(h, 4)
   ihdr[8] = 8 // bit depth
-  ihdr[9] = 2 // color type RGB
-  const raw = Buffer.alloc((w * 3 + 1) * h)
+  ihdr[9] = 6 // color type RGBA
+  const raw = Buffer.alloc((w * 4 + 1) * h)
   for (let y = 0; y < h; y++) {
-    raw[y * (w * 3 + 1)] = 0 // filter none
-    rgb.copy(raw, y * (w * 3 + 1) + 1, y * w * 3, (y + 1) * w * 3)
+    raw[y * (w * 4 + 1)] = 0 // filter none
+    rgba.copy(raw, y * (w * 4 + 1) + 1, y * w * 4, (y + 1) * w * 4)
   }
   return Buffer.concat([sig, chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw, { level: 9 })), chunk('IEND', Buffer.alloc(0))])
 }
 
-// ---------- desenho ----------
-function drawIcon(size, padding = 0.16) {
-  const px = Buffer.alloc(size * size * 3)
-  const bg = [10, 10, 12] // #0a0a0c
-  const fg = [246, 211, 83] // #f6d353
-  const fg2 = [242, 198, 46] // #f2c62e
-  const set = (x, y, c) => {
-    if (x < 0 || y < 0 || x >= size || y >= size) return
-    const i = (y * size + x) * 3
-    px[i] = c[0]; px[i + 1] = c[1]; px[i + 2] = c[2]
+// ---------- rasterização do chapéu de chef (espaço 200x200) ----------
+const noElipse = (X, Y, cx, cy, rx, ry) => ((X - cx) / rx) ** 2 + ((Y - cy) / ry) ** 2 <= 1
+
+/** Chapéu = união de elipses (corpo + lóbulos), recortado na base. */
+function dentroDoChapeu(X, Y) {
+  const dentro =
+    noElipse(X, Y, 100, 95, 78, 62) || // corpo
+    noElipse(X, Y, 100, 52, 52, 40) || // lóbulo central
+    noElipse(X, Y, 48, 88, 40, 42) || // lóbulo esquerdo
+    noElipse(X, Y, 152, 88, 40, 42) || // lóbulo direito
+    noElipse(X, Y, 55, 42, 34, 32) || // superior esquerdo
+    noElipse(X, Y, 145, 42, 34, 32) // superior direito
+  if (!dentro) return false
+  // base inferior termina em y≈158 com leve curva
+  if (Y > 150) {
+    const t = Math.min((Y - 150) / 8, 1)
+    if (Math.abs(X - 100) > 78 * (1 - 0.25 * t * t)) return false
   }
-  const rect = (x0, y0, w, h, c) => {
-    for (let y = Math.round(y0); y < y0 + h; y++) for (let x = Math.round(x0); x < x0 + w; x++) set(x, y, c)
-  }
-  const circle = (cx, cy, r, c) => {
-    for (let y = Math.floor(cy - r); y <= cy + r; y++)
-      for (let x = Math.floor(cx - r); x <= cx + r; x++)
-        if ((x - cx) ** 2 + (y - cy) ** 2 <= r * r) set(x, y, c)
+  return true
+}
+
+function drawIcon(size, padding = 0.1) {
+  const px = Buffer.alloc(size * size * 4)
+  const bg = [10, 10, 12, 255] // #0a0a0c
+  const amarelo = [246, 211, 83, 255] // #f6d353
+
+  const S = size * (1 - 2 * padding)
+  const off = size * padding
+  const fx = (x) => ((x - off) / S) * 200
+  const fy = (y) => ((y - off) / S) * 200
+
+  // pílula (olho): retângulo + círculos nas pontas, no espaço 200x200
+  const noPilula = (X, Y, x0, y0, x1, y1, r) => {
+    if (X >= x0 + r && X <= x1 - r && Y >= y0 && Y <= y1) return true
+    if (Y >= y0 + r && Y <= y1 - r && X >= x0 && X <= x1) return true
+    return (
+      noElipse(X, Y, x0 + r, y0 + r, r, r) ||
+      noElipse(X, Y, x1 - r, y0 + r, r, r) ||
+      noElipse(X, Y, x0 + r, y1 - r, r, r) ||
+      noElipse(X, Y, x1 - r, y1 - r, r, r)
+    )
   }
 
-  px.fill(0)
-  rect(0, 0, size, size, bg)
-
-  const p = size * padding
-  const area = size - 2 * p
-  // barras ascendentes (3)
-  const bw = area * 0.16
-  const gap = area * 0.12
-  const x0 = p
-  const baseY = size - p
-  const hs = [area * 0.35, area * 0.6, area * 0.9]
-  hs.forEach((h, i) => {
-    const x = x0 + i * (bw + gap)
-    rect(x, baseY - h, bw, h, fg)
-  })
-  // moeda no topo
-  const r = area * 0.17
-  circle(size - p - r, p + r, r, fg2)
-  // cifrão simples: barra vertical dentro da moeda
-  rect(size - p - r - r * 0.12, p + r * 0.35, r * 0.24, r * 1.3, bg)
-  rect(size - p - r - r * 0.5, p + r * 0.55, r * 1.0, r * 0.2, bg)
-  rect(size - p - r - r * 0.5, p + r * 1.25, r * 1.0, r * 0.2, bg)
-
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const X = fx(x + 0.5)
+      const Y = fy(y + 0.5)
+      const i = (y * size + x) * 4
+      let c = bg
+      if (dentroDoChapeu(X, Y)) c = amarelo
+      // base do chapéu
+      if (noPilula(X, Y, 70, 166, 130, 178, 6)) c = amarelo
+      // olhos
+      if (noPilula(X, Y, 76, 75, 90, 113, 7) || noPilula(X, Y, 110, 75, 124, 113, 7)) c = bg
+      px[i] = c[0]; px[i + 1] = c[1]; px[i + 2] = c[2]; px[i + 3] = c[3]
+    }
+  }
   return encodePNG(size, size, px)
 }
 
 writeFileSync(join(outDir, 'icon-192.png'), drawIcon(192))
 writeFileSync(join(outDir, 'icon-512.png'), drawIcon(512))
-writeFileSync(join(outDir, 'maskable-512.png'), drawIcon(512, 0.28))
-console.log('✅ Ícones gerados em public/icons/')
+writeFileSync(join(outDir, 'maskable-512.png'), drawIcon(512, 0.26))
+console.log('✅ Ícones chef gerados em public/icons/')

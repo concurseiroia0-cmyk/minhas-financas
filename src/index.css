@@ -83,6 +83,29 @@
   filter: drop-shadow(0 0 6px rgb(246 211 83 / 0.45));
 }
 
+/* ── Chef animado (mascote do app) ─────────────────────── */
+.chef-anim {
+  animation: chefMove 4s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+.chef-anim .olho {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: chefBlink 3.5s infinite;
+}
+@keyframes chefMove {
+  0% { transform: rotate(-4deg) translateX(-3px); }
+  50% { transform: rotate(0deg) translateX(0); }
+  100% { transform: rotate(4deg) translateX(3px); }
+}
+@keyframes chefBlink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  93%, 95% { transform: scaleY(0.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chef-anim, .chef-anim .olho { animation: none; }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
