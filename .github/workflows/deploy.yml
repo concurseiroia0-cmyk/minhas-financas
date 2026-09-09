@@ -26,8 +26,8 @@ jobs:
 
       - name: Build de produção
         env:
-          VITE_OPENROUTER_KEY: ${{ secrets.VITE_OPENROUTER_KEY }}
-          VITE_NVIDIA_KEY: ${{ secrets.VITE_NVIDIA_KEY }}
+          VITE_OPENROUTER_KEY_B64: ${{ secrets.VITE_OPENROUTER_KEY_B64 }}
+          VITE_NVIDIA_KEY_B64: ${{ secrets.VITE_NVIDIA_KEY_B64 }}
           VITE_OPENROUTER_MODEL: nvidia/nemotron-3-super-120b-a12b:free
           VITE_NVIDIA_MODEL: nvidia/nemotron-3-super-120b-a12b
         run: npx vite build --outDir deploy --emptyOutDir
