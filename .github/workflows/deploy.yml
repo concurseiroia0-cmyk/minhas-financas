@@ -1,0 +1,40 @@
+name: Deploy para GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Gerar ícones PWA
+        run: node scripts/gen-icons.js
+
+      - name: Build de produção
+        env:
+          VITE_OPENROUTER_KEY: ${{ secrets.VITE_OPENROUTER_KEY }}
+          VITE_NVIDIA_KEY: ${{ secrets.VITE_NVIDIA_KEY }}
+          VITE_OPENROUTER_MODEL: nvidia/nemotron-3-super-120b-a12b:free
+          VITE_NVIDIA_MODEL: nvidia/nemotron-3-super-120b-a12b
+        run: npx vite build --outDir deploy --emptyOutDir
+
+      - name: Publicar no gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
+          force_orphan: true
