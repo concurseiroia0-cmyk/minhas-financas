@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Plus, LayoutDashboard, ListOrdered, CreditCard, Repeat, Calculator, ChartPie, Settings2, Building2 } from 'lucide-react'
+import { Plus, LayoutDashboard, ListOrdered, CreditCard, Repeat, Calculator, ChartPie, Settings2, Building2, Target } from 'lucide-react'
 import { db } from './db/schema.js'
 import { useSettings, carregarDadosDemo } from './store/useSettings.js'
 import { BadgeOffline } from './components/ui.jsx'
@@ -12,6 +12,7 @@ import Lancamentos from './pages/Lancamentos.jsx'
 import QuickAdd from './pages/QuickAdd.jsx'
 import Cartoes from './pages/Cartoes.jsx'
 import Bancos from './pages/Bancos.jsx'
+import Metas from './pages/Metas.jsx'
 import Recorrentes from './pages/Recorrentes.jsx'
 import HorasCalc from './pages/HorasCalc.jsx'
 import Relatorios from './pages/Relatorios.jsx'
@@ -22,6 +23,7 @@ const NAV = [
   { to: '/', label: 'Início', icon: LayoutDashboard },
   { to: '/lancamentos', label: 'Lançamentos', icon: ListOrdered },
   { to: '/bancos', label: 'Bancos', icon: Building2 },
+  { to: '/metas', label: 'Metas', icon: Target },
   { to: '/cartoes', label: 'Cartões', icon: CreditCard },
   { to: '/recorrentes', label: 'Recorrentes', icon: Repeat },
   { to: '/horas', label: 'Horas', icon: Calculator },
@@ -94,6 +96,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/lancamentos" element={<Lancamentos />} />
           <Route path="/bancos" element={<Bancos />} />
+          <Route path="/metas" element={<Metas />} />
           <Route path="/cartoes" element={<Cartoes />} />
           <Route path="/recorrentes" element={<Recorrentes />} />
           <Route path="/horas" element={<HorasCalc />} />

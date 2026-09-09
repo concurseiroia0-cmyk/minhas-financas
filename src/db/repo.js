@@ -62,6 +62,12 @@ export const listarRecorrencias = () => db.recurrences.toArray()
 export const salvarRecorrencia = (r) => db.recurrences.put({ id: r.id ?? uid(), ...r })
 export const excluirRecorrencia = (id) => db.recurrences.delete(id)
 
+// ---------------- Metas (goals) ----------------
+
+export const listarMetas = () => db.goals.toArray()
+export const salvarMeta = (g) => db.goals.put({ id: g.id ?? uid(), criadoEm: g.criadoEm ?? Date.now(), ...g })
+export const excluirMeta = (id) => db.goals.delete(id)
+
 // ---------------- IA: cache e fila ----------------
 
 export const getCacheIA = (hashTexto) => db.aiCache.where('hashTexto').equals(hashTexto).first()
@@ -85,22 +91,24 @@ export async function resetarTudo() {
 }
 
 export async function exportarJSON() {
-  const [profile, accounts, cards, categories, transactions, recurrences] = await Promise.all([
+  const [profile, accounts, cards, categories, transactions, recurrences, goals] = await Promise.all([
     db.profile.toArray(), db.accounts.toArray(), db.cards.toArray(),
     db.categories.toArray(), db.transactions.toArray(), db.recurrences.toArray(),
+    db.goals.toArray(),
   ])
-  return { app: 'financas-pwa', versao: 1, exportadoEm: new Date().toISOString(), profile, accounts, cards, categories, transactions, recurrences }
+  return { app: 'financas-pwa', versao: 2, exportadoEm: new Date().toISOString(), profile, accounts, cards, categories, transactions, recurrences, goals }
 }
 
 export async function importarJSON(data) {
   if (data.app !== 'financas-pwa') throw new Error('Arquivo não reconhecido como backup do app')
-  await db.transaction('rw', db.profile, db.accounts, db.cards, db.categories, db.transactions, db.recurrences, async () => {
-    await Promise.all([db.profile.clear(), db.accounts.clear(), db.cards.clear(), db.categories.clear(), db.transactions.clear(), db.recurrences.clear()])
+  await db.transaction('rw', db.profile, db.accounts, db.cards, db.categories, db.transactions, db.recurrences, db.goals, async () => {
+    await Promise.all([db.profile.clear(), db.accounts.clear(), db.cards.clear(), db.categories.clear(), db.transactions.clear(), db.recurrences.clear(), db.goals.clear()])
     if (data.profile?.length) await db.profile.bulkPut(data.profile)
     if (data.accounts?.length) await db.accounts.bulkPut(data.accounts)
     if (data.cards?.length) await db.cards.bulkPut(data.cards)
     if (data.categories?.length) await db.categories.bulkPut(data.categories)
     if (data.transactions?.length) await db.transactions.bulkPut(data.transactions)
     if (data.recurrences?.length) await db.recurrences.bulkPut(data.recurrences)
+    if (data.goals?.length) await db.goals.bulkPut(data.goals)
   })
 }

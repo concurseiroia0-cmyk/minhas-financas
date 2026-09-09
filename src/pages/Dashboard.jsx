@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Link } from 'react-router-dom'
 import { db } from '../db/schema.js'
+import { progressoMeta } from '../core/goals.js'
+import { AnelProgresso } from '../components/AnelProgresso.jsx'
 import { Card, CardResumo } from '../components/ui.jsx'
 import { GraficoCategoria } from '../components/GraficoCategoria.jsx'
 import { Calendario } from '../components/Calendario.jsx'
@@ -12,7 +14,7 @@ import { calcularFatura } from '../core/invoice.js'
 import { estadoPermissao, pedirPermissao, verificarVencimentos } from '../core/notifications.js'
 import { fmtMoney } from '../utils/money.js'
 import { fmtMonthLabel, diasAte, fmtDateShort, monthKey, hoje } from '../utils/date.js'
-import { CreditCard, Repeat, ArrowUpRight, Building2, Plus, ArrowLeftRight, Bell } from 'lucide-react'
+import { CreditCard, Repeat, ArrowUpRight, Building2, Plus, ArrowLeftRight, Bell, Target } from 'lucide-react'
 
 export default function Dashboard() {
   const profile = useLiveQuery(() => db.profile.get('me'), [])
@@ -21,6 +23,7 @@ export default function Dashboard() {
   const cards = useLiveQuery(() => db.cards.toArray(), []) ?? []
   const recs = useLiveQuery(() => db.recurrences.toArray(), []) ?? []
   const contas = useLiveQuery(() => db.accounts.toArray(), []) ?? []
+  const metas = useLiveQuery(() => db.goals.toArray(), []) ?? []
 
   const [permissao, setPermissao] = useState(estadoPermissao())
 
@@ -122,6 +125,29 @@ export default function Dashboard() {
             <CardResumo titulo="Guardado" valor={profile.guardado} cor="text-[#f6d353]" />
             <CardResumo titulo="Disponível" valor={profile.disponivel} />
           </div>
+        )}
+
+        {/* ── Metas (teaser) ──────────────────────────────────── */}
+        {metas.length > 0 && (
+          <section>
+            <div className="flex items-baseline justify-between px-1 mb-2">
+              <h2 className="text-sm font-bold flex items-center gap-1.5"><Target className="h-4 w-4 text-violet-400" /> Suas metas</h2>
+              <Link to="/metas" className="text-xs text-[#f6d353] font-semibold inline-flex items-center">ver todas <ArrowUpRight className="h-3.5 w-3.5" /></Link>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
+              {metas.map((g) => {
+                const p = progressoMeta(g)
+                return (
+                  <Link key={g.id} to="/metas"
+                    className="shrink-0 w-40 rounded-2xl bg-slate-900 border border-slate-800 p-3 flex flex-col items-center gap-1.5 hover:border-slate-700 transition-colors">
+                    <AnelProgresso percent={p.pct} cor={p.cor} tamanho={72} />
+                    <p className="text-xs font-semibold truncate max-w-full">{g.titulo}</p>
+                    <p className="text-[11px] tabular-nums" style={{ color: p.cor }}>{p.pctExibicao}% · {fmtMoney(g.guardado)}</p>
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
         )}
 
         {/* ── Calendário ──────────────────────────────────────── */}

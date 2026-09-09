@@ -40,6 +40,20 @@ db.version(3).stores({
   settings: 'id',
 })
 
+// v4: metas de economia (juntar dinheiro)
+db.version(4).stores({
+  profile: 'id',
+  accounts: 'id, nome',
+  cards: 'id, nome',
+  categories: 'id, nome',
+  transactions: 'id, data, categoriaId, cardId, tipo, origem, recurrenceId, valor, contaPaga, contaId',
+  recurrences: 'id, proximaData, ativo',
+  aiCache: 'id, hashTexto',
+  aiQueue: 'id, criadoEm',
+  settings: 'id',
+  goals: 'id, criadoEm',
+})
+
 // ---------- Seeding ----------
 
 const CATEGORIAS_PADRAO = [
