@@ -55,7 +55,7 @@ export default function Onboarding({ onConcluir }) {
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Controle offline-first. A IA só sugere — você confirma.</p>
         </div>
 
-        <form onSubmit={comecarDoZero} className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 shadow-sm">
+        <form onSubmit={comecarDoZero} className="rounded-2xl bg-slate-900 border border-slate-800 p-5 shadow-sm">
           <Field label="Renda líquida (R$)">
             <input className={inputCls} inputMode="decimal" placeholder="3200" value={form.rendaLiquida} onChange={(e) => set('rendaLiquida', e.target.value)} />
           </Field>
@@ -82,14 +82,14 @@ export default function Onboarding({ onConcluir }) {
               </div>
             ))}
           </div>
-          <button type="button" onClick={addBanco} className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mb-3 inline-flex items-center gap-1">
+          <button type="button" onClick={addBanco} className="text-xs text-[#f6d353] font-medium mb-3 inline-flex items-center gap-1">
             <Plus className="h-3.5 w-3.5" /> Adicionar outro banco
           </button>
           {totalBancos > 0 && (
             <p className="text-xs text-slate-400 mb-3">Total guardado: <strong className="text-slate-600 dark:text-slate-300">R$ {totalBancos.toFixed(2).replace('.', ',')}</strong></p>
           )}
 
-          <button type="submit" disabled={!!carregando} className="w-full rounded-xl py-3 font-semibold bg-emerald-600 text-white hover:bg-emerald-500 disabled:opacity-50 flex items-center justify-center gap-2">
+          <button type="submit" disabled={!!carregando} className="w-full rounded-xl py-3 font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e] disabled:opacity-50 flex items-center justify-center gap-2">
             {carregando === 'zero' ? <Spinner /> : null} Começar
           </button>
 
@@ -99,7 +99,7 @@ export default function Onboarding({ onConcluir }) {
             <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
           </div>
 
-          <button type="button" onClick={usarDemo} disabled={!!carregando} className="w-full rounded-xl py-3 font-semibold border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-2">
+          <button type="button" onClick={usarDemo} disabled={!!carregando} className="w-full rounded-xl py-3 font-semibold border border-[#f6d353]/40 text-[#f6d353] hover:bg-[#f2c62e]/10 disabled:opacity-50 flex items-center justify-center gap-2">
             {carregando === 'demo' ? <Spinner /> : <Sparkles className="h-4 w-4" />} Explorar com dados de exemplo
           </button>
         </form>

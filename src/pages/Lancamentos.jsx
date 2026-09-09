@@ -48,7 +48,7 @@ export default function Lancamentos() {
   return (
     <div>
       <PageHeader title="Lançamentos" subtitle={`${filtradas.length} registro(s) · líquido ${fmtMoney(total)}`}>
-        <button onClick={nova} className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">+ Manual</button>
+        <button onClick={nova} className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">+ Manual</button>
       </PageHeader>
 
       <Card className="p-3 mb-4">

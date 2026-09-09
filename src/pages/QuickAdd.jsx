@@ -73,7 +73,7 @@ export default function QuickAdd() {
           disabled={carregando}
         />
         <button type="submit" disabled={!texto.trim() || carregando}
-          className="h-11 w-11 shrink-0 rounded-xl bg-emerald-600 text-white flex items-center justify-center hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+          className="h-11 w-11 shrink-0 rounded-xl bg-[#f6d353] text-slate-950 flex items-center justify-center hover:bg-[#f2c62e] disabled:opacity-40 transition-colors"
           aria-label="Interpretar">
           {carregando ? <Spinner /> : <Send className="h-5 w-5" />}
         </button>
@@ -115,7 +115,7 @@ export default function QuickAdd() {
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">Suas últimas frases</p>
           <div className="space-y-1">
             {historico.map((h) => (
-              <button key={h} onClick={() => setTexto(h)} className="block w-full text-left text-sm rounded-xl px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40">
+              <button key={h} onClick={() => setTexto(h)} className="block w-full text-left text-sm rounded-xl px-3 py-2 bg-slate-900 border border-slate-800 hover:border-[#f6d353]/40">
                 “{h}”
               </button>
             ))}

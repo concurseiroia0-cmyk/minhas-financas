@@ -24,7 +24,7 @@ export default function Cartoes() {
   return (
     <div>
       <PageHeader title="Cartões" subtitle="Compra no crédito é despesa; pagamento de fatura é transferência">
-        <button onClick={() => setCadastroAberto(true)} className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 inline-flex items-center gap-1"><Plus className="h-4 w-4" /> Cartão</button>
+        <button onClick={() => setCadastroAberto(true)} className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e] inline-flex items-center gap-1"><Plus className="h-4 w-4" /> Cartão</button>
       </PageHeader>
 
       {cards.length === 0 && (
@@ -71,7 +71,7 @@ export default function Cartoes() {
               {card.limite > 0 && (
                 <div className="mb-3">
                   <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                    <div className={`h-full rounded-full ${usoPct > 80 ? 'bg-rose-500' : usoPct > 50 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${usoPct}%` }} />
+                    <div className={`h-full rounded-full ${usoPct > 80 ? 'bg-rose-500' : usoPct > 50 ? 'bg-amber-500' : 'bg-[#f6d353]'}`} style={{ width: `${usoPct}%` }} />
                   </div>
                   <p className="text-[11px] text-slate-400 mt-1">{usoPct}% do limite usado · disponível {fmtMoney(f.disponivel)}</p>
                 </div>
@@ -83,7 +83,7 @@ export default function Cartoes() {
                   Pagar fatura
                 </button>
                 <button onClick={() => setCompraAberta(card)}
-                  className="flex-1 rounded-xl py-2 text-sm font-semibold border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10">
+                  className="flex-1 rounded-xl py-2 text-sm font-semibold border border-[#f6d353]/40 text-[#f6d353] hover:bg-[#f2c62e]/10">
                   Comprar
                 </button>
               </div>
@@ -109,7 +109,7 @@ function CadastroCartao({ open, onClose, cartao, contas = [] }) {
   return (
     <Modal open={open} onClose={onClose} title="Novo cartão"
       footer={<button onClick={async () => { if (!form.nome.trim()) return; await salvarCartao({ nome: form.nome.trim(), limite: parseMoney(form.limite), diaFechamento: Number(form.diaFechamento) || 1, diaVencimento: Number(form.diaVencimento) || 1, contaId: form.contaId || null }); onClose() }}
-        className="w-full rounded-xl py-2.5 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">Salvar</button>}>
+        className="w-full rounded-xl py-2.5 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">Salvar</button>}>
       <Field label="Nome"><input className={inputCls} value={form.nome} onChange={(e) => set('nome', e.target.value)} placeholder="Ex.: Nubank" autoFocus /></Field>
       {contas.length > 0 && (
         <Field label="Vincular ao banco" hint="A fatura aparece na página do banco vinculado.">
@@ -144,7 +144,7 @@ function CompraCredito({ open, onClose, card, categorias }) {
 
   return (
     <Modal open={open} onClose={onClose} title={`Compra no ${card?.nome ?? 'cartão'}`}
-      footer={<button onClick={salvar} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">Lançar compra</button>}>
+      footer={<button onClick={salvar} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">Lançar compra</button>}>
       <Field label="Descrição"><input className={inputCls} value={form.descricao} onChange={(e) => set('descricao', e.target.value)} placeholder="Ex.: Notebook" autoFocus /></Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Valor total (R$)"><input className={inputCls} inputMode="decimal" value={form.valor} onChange={(e) => set('valor', e.target.value)} placeholder="500" /></Field>
@@ -185,7 +185,7 @@ function PagamentoFatura({ open, onClose, dados, contas }) {
 
   return (
     <Modal open={open} onClose={onClose} title="Pagar fatura"
-      footer={<button onClick={pagar} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">Confirmar pagamento</button>}>
+      footer={<button onClick={pagar} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">Confirmar pagamento</button>}>
       {f && (
         <>
           <p className="text-sm mb-3">

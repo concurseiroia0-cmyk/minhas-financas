@@ -8,7 +8,7 @@ import { gerarParcelas } from '../core/recurrence.js'
 const METODOS = ['dinheiro', 'pix', 'debito', 'credito']
 const TIPOS = [
   { v: 'despesa', label: 'Despesa', cls: 'bg-rose-500' },
-  { v: 'receita', label: 'Receita', cls: 'bg-emerald-500' },
+  { v: 'receita', label: 'Receita', cls: 'bg-[#f6d353]' },
   { v: 'transferencia', label: 'Transferência', cls: 'bg-slate-500' },
 ]
 
@@ -96,7 +96,7 @@ export function TransacaoForm({ open, onClose, transacao, categorias, cartoes, c
               </button>
           )}
           <button onClick={onClose} className="rounded-xl px-4 py-2 text-sm font-medium border border-slate-300 dark:border-slate-700">Cancelar</button>
-          <button onClick={salvar} className="flex-1 rounded-xl px-4 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">Salvar</button>
+          <button onClick={salvar} className="flex-1 rounded-xl px-4 py-2 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">Salvar</button>
         </div>
       }
     >

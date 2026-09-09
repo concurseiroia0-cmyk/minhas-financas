@@ -63,7 +63,7 @@ export default function Config() {
       <Card className="p-4 mb-3">
         <p className="text-sm font-semibold flex items-center gap-1.5 mb-3"><Cpu className="h-4 w-4 text-sky-500" /> Inteligência Artificial</p>
         <div className="flex items-center gap-2 mb-3">
-          <Badge className={temChaveIA() ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300'}>
+          <Badge className={temChaveIA() ? 'bg-[#f6d353]/15 text-[#f6d353]' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300'}>
             {temChaveIA() ? '✓ IA ativada' : '✕ IA desativada'}
           </Badge>
           <span className="text-[11px] text-slate-400 flex items-center gap-1">
@@ -88,7 +88,7 @@ export default function Config() {
         <div className="grid grid-cols-2 gap-2">
           {['dark', 'light'].map((t) => (
             <button key={t} onClick={() => settings.update({ tema: t })}
-              className={`rounded-xl py-2.5 text-sm font-semibold border ${settings.tema === t ? 'border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'border-slate-300 dark:border-slate-700'}`}>
+              className={`rounded-xl py-2.5 text-sm font-semibold border ${settings.tema === t ? 'border-[#f6d353] bg-[#f6d353]/10 text-[#f6d353]' : 'border-slate-300 dark:border-slate-700'}`}>
               {t === 'dark' ? '🌙 Escuro' : '☀️ Claro'}
             </button>
           ))}
@@ -118,7 +118,7 @@ export default function Config() {
 
       {/* Dados */}
       <Card className="p-4 mb-3">
-        <p className="text-sm font-semibold flex items-center gap-1.5 mb-3"><Database className="h-4 w-4 text-emerald-500" /> Dados</p>
+        <p className="text-sm font-semibold flex items-center gap-1.5 mb-3"><Database className="h-4 w-4 text-[#f6d353]" /> Dados</p>
         <div className="flex flex-wrap gap-2">
           <button onClick={exportar} className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-2">
             <Download className="h-4 w-4" /> Exportar backup
@@ -131,7 +131,7 @@ export default function Config() {
             <Trash2 className="h-4 w-4" /> Apagar tudo
           </button>
         </div>
-        {importMsg && <p className={`text-xs mt-2 ${importMsg.ok ? 'text-emerald-600' : 'text-rose-600'}`}>{importMsg.msg}</p>}
+        {importMsg && <p className={`text-xs mt-2 ${importMsg.ok ? 'text-[#f6d353]' : 'text-rose-600'}`}>{importMsg.msg}</p>}
         <p className="text-[11px] text-slate-400 mt-3">
           Seus dados vivem apenas no IndexedDB deste navegador/dispositivo. Nada é enviado a servidores.
           Exporte de vez em quando — limpar os dados do site apaga tudo.

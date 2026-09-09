@@ -31,14 +31,14 @@ export default function Bancos() {
             <ArrowLeftRight className="h-4 w-4" /> Transferir
           </button>
           <button onClick={() => { setEditando(null); setFormAberto(true) }}
-            className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 inline-flex items-center gap-1">
+            className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e] inline-flex items-center gap-1">
             <Plus className="h-4 w-4" /> Banco
           </button>
         </div>
       </PageHeader>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
-        <CardResumo titulo="Total nos bancos" valor={total} cor="text-emerald-600 dark:text-emerald-400" />
+        <CardResumo titulo="Total nos bancos" valor={total} cor="text-[#f6d353]" />
         <CardResumo titulo="Gasto no mês" valor={contas.reduce((a, c) => a + gastoDoMesConta(c, txs, mk), 0)} cor="text-rose-600 dark:text-rose-400" />
       </div>
 
@@ -55,7 +55,7 @@ export default function Bancos() {
               <Card key={conta.id} className="p-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                    <span className="h-9 w-9 rounded-xl bg-[#f6d353]/10 text-[#f6d353] flex items-center justify-center">
                       <Building2 className="h-4.5 w-4.5" />
                     </span>
                     <div>
@@ -66,7 +66,7 @@ export default function Bancos() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className={`font-extrabold tabular-nums ${saldo < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{fmtMoney(saldo)}</p>
+                    <p className={`font-extrabold tabular-nums ${saldo < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-[#f6d353]'}`}>{fmtMoney(saldo)}</p>
                     <p className="text-[11px] text-slate-400">saldo atual</p>
                   </div>
                 </div>
@@ -86,7 +86,7 @@ export default function Bancos() {
                   </div>
                 </div>
                 <div className="flex gap-1 mt-2 justify-end">
-                  <button onClick={() => { setEditando(conta); setFormAberto(true) }} className="p-2 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/30" aria-label="Editar"><Pencil className="h-4 w-4" /></button>
+                  <button onClick={() => { setEditando(conta); setFormAberto(true) }} className="p-2 rounded-lg text-slate-400 hover:text-[#f6d353] hover:bg-emerald-50 dark:hover:bg-emerald-900/30" aria-label="Editar"><Pencil className="h-4 w-4" /></button>
                   <button onClick={() => setParaExcluir(conta)} className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30" aria-label="Excluir"><Trash2 className="h-4 w-4" /></button>
                 </div>
               </Card>
@@ -126,7 +126,7 @@ function BancoForm({ open, onClose, conta }) {
           if (!nome.trim()) return
           await salvarConta({ id: conta?.id, nome: nome.trim(), tipo, saldoInicial: parseMoney(saldo) })
           onClose()
-        }} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">
+        }} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">
           Salvar
         </button>
       }>
@@ -163,7 +163,7 @@ function TransferenciaForm({ open, onClose, contas }) {
 
   return (
     <Modal open={open} onClose={onClose} title="Transferir entre bancos"
-      footer={<button onClick={transferir} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">Transferir</button>}>
+      footer={<button onClick={transferir} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">Transferir</button>}>
       <Field label="De (origem)">
         <select className={inputCls} value={origem} onChange={(e) => setOrigem(e.target.value)}>
           <option value="">Escolher…</option>

@@ -68,7 +68,7 @@ export function ConfirmarSugestao({ open, onClose, itens = [], categorias, carto
         <div className="flex gap-2">
           <button onClick={onClose} className="rounded-xl px-4 py-2 text-sm font-medium border border-slate-300 dark:border-slate-700">Descartar</button>
           <button onClick={salvarTodos} disabled={salvando || !pendentes}
-            className="flex-1 rounded-xl px-4 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 disabled:opacity-40 inline-flex items-center justify-center gap-1.5">
+            className="flex-1 rounded-xl px-4 py-2 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e] disabled:opacity-40 inline-flex items-center justify-center gap-1.5">
             <Check className="h-4 w-4" /> Salvar {pendentes > 0 ? `${pendentes} lançamento${pendentes > 1 ? 's' : ''}` : ''}
           </button>
         </div>
@@ -76,7 +76,7 @@ export function ConfirmarSugestao({ open, onClose, itens = [], categorias, carto
     >
       {textoOrigem && (
         <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 flex items-start gap-1">
-          <Sparkles className="h-3.5 w-3.5 mt-0.5 text-emerald-500 shrink-0" />
+          <Sparkles className="h-3.5 w-3.5 mt-0.5 text-[#f6d353] shrink-0" />
           Você escreveu: “{textoOrigem}”
         </p>
       )}
@@ -104,14 +104,14 @@ function ItemCard({ item, idx, upd, categorias, contas = [] }) {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           {item.tipo === 'receita'
-            ? <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">Receita</Badge>
+            ? <Badge className="bg-[#f6d353]/15 text-[#f6d353]">Receita</Badge>
             : <Badge className="bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300">Despesa</Badge>}
           {item.origemNivel === 'regra-local' && <Badge className="bg-sky-100 text-sky-700 dark:bg-sky-900/60 dark:text-sky-300">regra local</Badge>}
           {item.origemNivel === 'historico' && <Badge className="bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-300">seu histórico</Badge>}
-          {item.origemNivel === 'ia' && <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">IA {(item.confianca * 100).toFixed(0)}%</Badge>}
+          {item.origemNivel === 'ia' && <Badge className="bg-[#f6d353]/15 text-[#f6d353]">IA {(item.confianca * 100).toFixed(0)}%</Badge>}
         </div>
         <button onClick={() => upd(idx, { confirmado: !item.confirmado })}
-          className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${item.confirmado ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 dark:border-slate-600'}`}
+          className={`h-6 w-6 rounded-full border-2 flex items-center justify-center ${item.confirmado ? 'bg-[#f6d353] border-[#f6d353] text-white' : 'border-slate-300 dark:border-slate-600'}`}
           aria-label="Incluir no lançamento">
           {item.confirmado && <Check className="h-3.5 w-3.5" />}
         </button>

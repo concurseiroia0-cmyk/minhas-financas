@@ -2,12 +2,55 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+  Paleta do redesign (fintech escuro com acento amarelo/creme):
+  - fundos: preto profundo (#0a0a0c) → grafite (#17171c)
+  - acento primário: amarelo manteiga #f6d353 (usar SEMPRE com texto preto)
+  - hero/destaques: violeta #7c3aed
+  - emerald/rose continuam como semântica de receita/despesa
+  Sobrescreve as escalas slate e emerald para propagar pelo app inteiro.
+*/
+@theme {
+  /* Neutros "ink" — preto profundo → grafite */
+  --color-slate-50: #f5f5f7;
+  --color-slate-100: #e8e8ee;
+  --color-slate-200: #d9d9e2;
+  --color-slate-300: #b9b9c6;
+  --color-slate-400: #8f8f9e;
+  --color-slate-500: #6c6c7a;
+  --color-slate-600: #4a4a56;
+  --color-slate-700: #232329;
+  --color-slate-800: #17171c;
+  --color-slate-900: #111114;
+  --color-slate-950: #0a0a0c;
+
+  /* Primário "butter" — amarelo creme (renderizado como emerald no app) */
+  --color-emerald-50: #fdf9e7;
+  --color-emerald-100: #fbf0c4;
+  --color-emerald-200: #f7e29a;
+  --color-emerald-300: #f6d353;
+  --color-emerald-400: #f2c62e;
+  --color-emerald-500: #e8b814;
+  --color-emerald-600: #d3a50d;
+  --color-emerald-700: #a8820e;
+  --color-emerald-800: #7d6111;
+  --color-emerald-900: #53400f;
+
+  /* Body */
+  --color-ink: #0a0a0c;
+}
+
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+    scrollbar-color: #3a3a44 #0a0a0c;
   }
   body {
-    @apply bg-slate-100 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+    @apply bg-slate-950 text-slate-100 antialiased;
+    background-image:
+      radial-gradient(60rem 30rem at 85% -10%, rgb(124 58 237 / 0.13), transparent 60%),
+      radial-gradient(50rem 25rem at -10% 0%, rgb(246 211 83 / 0.05), transparent 55%);
+    background-attachment: fixed;
   }
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button {
@@ -27,11 +70,27 @@
   padding-top: env(safe-area-inset-top, 0px);
 }
 
+/* Hero violeta do topo (Dashboard) */
+@utility hero-violeta {
+  background:
+    radial-gradient(120% 140% at 85% -20%, #a78bfa 0%, transparent 45%),
+    radial-gradient(130% 120% at 15% -30%, #8b5cf6 0%, transparent 55%),
+    linear-gradient(160deg, #6d28d9 0%, #5b21b6 55%, #4c1d95 100%);
+}
+
+/* Anel brilhante amarelo (gráfico analítico) */
+@utility glow-butter {
+  filter: drop-shadow(0 0 6px rgb(246 211 83 / 0.45));
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(148 163 184 / 0.4);
+  background: #3a3a44;
   border-radius: 999px;
+}
+::selection {
+  background: rgb(246 211 83 / 0.3);
 }

@@ -45,7 +45,7 @@ export default function App() {
   if (!loaded || !pronto) {
     return (
       <div className="min-h-dvh flex items-center justify-center">
-        <div className="animate-pulse text-slate-400">Carregando…</div>
+        <div className="animate-pulse text-slate-500">Carregando…</div>
       </div>
     )
   }
@@ -62,20 +62,20 @@ export default function App() {
 
       {/* Sidebar desktop */}
       {!hideNav && (
-        <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur px-3 py-4 z-30">
+        <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r border-slate-800 bg-slate-950/80 backdrop-blur px-3 py-4 z-30">
           <div className="px-2 mb-6">
             <p className="font-extrabold text-lg tracking-tight">💰 Minhas Finanças</p>
-            <p className="text-xs text-slate-400">offline-first</p>
+            <p className="text-xs text-slate-500">offline-first</p>
           </div>
           <nav className="flex-1 space-y-0.5">
             {NAV.map(({ to, label, icon: Icon }) => (
               <NavLink key={to} to={to} end={to === '/'}
-                className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${isActive ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${isActive ? 'bg-[#f6d353]/10 text-[#f6d353]' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}`}>
                 <Icon className="h-[18px] w-[18px]" /> {label}
               </NavLink>
             ))}
           </nav>
-          <p className="px-3 text-[10px] text-slate-400">Dados 100% locais · IndexedDB</p>
+          <p className="px-3 text-[10px] text-slate-600">Dados 100% locais · IndexedDB</p>
         </aside>
       )}
 
@@ -99,14 +99,14 @@ export default function App() {
 
       {/* Bottom nav mobile */}
       {!hideNav && (
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur pb-safe">
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-slate-800 bg-slate-950/95 backdrop-blur pb-safe">
           <div className="grid grid-cols-6">
             {[NAV[0], NAV[1], NAV[2]].map(({ to, label, icon: Icon }) => (
               <NavBtn key={to} to={to} label={label} icon={Icon} />
             ))}
             <div className="relative flex items-center justify-center">
               <NavLink to="/quickadd" state={{ quickAdd: true }}
-                className="absolute -top-5 h-12 w-12 rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 flex items-center justify-center active:scale-95 transition-transform"
+                className="absolute -top-5 h-12 w-12 rounded-full bg-[#f6d353] text-slate-950 shadow-lg shadow-[#f6d353]/25 ring-4 ring-slate-950 flex items-center justify-center active:scale-95 transition-transform"
                 aria-label="Adicionar rápido">
                 <Plus className="h-6 w-6" />
               </NavLink>
@@ -124,7 +124,7 @@ export default function App() {
 function NavBtn({ to, label, icon: Icon }) {
   return (
     <NavLink to={to} end={to === '/'}
-      className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-medium ${isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`}>
+      className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-medium ${isActive ? 'text-[#f6d353]' : 'text-slate-500'}`}>
       <Icon className="h-5 w-5" />
       <span className="truncate max-w-full px-1">{label}</span>
     </NavLink>
@@ -136,7 +136,7 @@ function QuickAddFAB() {
   if (location.pathname === '/quickadd') return null
   return (
     <NavLink to="/quickadd" state={{ quickAdd: true }}
-      className="hidden md:flex fixed bottom-6 right-6 z-40 h-14 px-5 rounded-full bg-emerald-600 text-white shadow-xl shadow-emerald-600/30 items-center gap-2 font-semibold hover:bg-emerald-500 transition-colors">
+      className="hidden md:flex fixed bottom-6 right-6 z-40 h-14 px-5 rounded-full bg-[#f6d353] text-slate-950 shadow-xl shadow-[#f6d353]/20 items-center gap-2 font-bold hover:bg-[#f2c62e] transition-colors">
       <Sparkles className="h-5 w-5" /> Adicionar
     </NavLink>
   )

@@ -1,5 +1,5 @@
 // Gera public/icons/*.png sem dependências: encoder PNG mínimo (zlib do Node).
-// Design: fundo escuro, barras ascendentes emerald + moeda.
+// Design: fundo preto ink, barras ascendentes amarelo manteiga + moeda.
 import { deflateSync } from 'node:zlib'
 import { mkdirSync, writeFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -56,9 +56,9 @@ function encodePNG(w, h, rgb) {
 // ---------- desenho ----------
 function drawIcon(size, padding = 0.16) {
   const px = Buffer.alloc(size * size * 3)
-  const bg = [15, 23, 42] // #0f172a
-  const fg = [52, 211, 153] // #34d399
-  const fg2 = [167, 243, 208] // #a7f3d0
+  const bg = [10, 10, 12] // #0a0a0c
+  const fg = [246, 211, 83] // #f6d353
+  const fg2 = [242, 198, 46] // #f2c62e
   const set = (x, y, c) => {
     if (x < 0 || y < 0 || x >= size || y >= size) return
     const i = (y * size + x) * 3

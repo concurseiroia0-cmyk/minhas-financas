@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Link } from 'react-router-dom'
 import { db } from '../db/schema.js'
-import { Card, PageHeader, CardResumo } from '../components/ui.jsx'
+import { Card, CardResumo } from '../components/ui.jsx'
 import { GraficoCategoria } from '../components/GraficoCategoria.jsx'
 import { gastoDoMes, mediaDiaria } from '../core/balance.js'
 import { saldoConta, totalNosBancos } from '../core/accounts.js'
@@ -9,7 +9,7 @@ import { valorHora, horasPara } from '../core/hourlyRate.js'
 import { calcularFatura } from '../core/invoice.js'
 import { fmtMoney } from '../utils/money.js'
 import { fmtMonthLabel, diasAte, fmtDateShort, monthKey, hoje } from '../utils/date.js'
-import { Sparkles, CreditCard, Repeat, ArrowRight, Building2, Calculator, ChartPie } from 'lucide-react'
+import { CreditCard, Repeat, ArrowUpRight, Building2, Plus, ArrowLeftRight } from 'lucide-react'
 
 export default function Dashboard() {
   const profile = useLiveQuery(() => db.profile.get('me'), [])
@@ -30,7 +30,7 @@ export default function Dashboard() {
     .map(([id, valor]) => ({
       nome: catDe.get(id)?.nome || 'Sem categoria',
       valor,
-      cor: catDe.get(id)?.cor || '#94a3b8',
+      cor: catDe.get(id)?.cor || '#8f8f9e',
     }))
 
   const faturas = cards.map((c) => ({ card: c, f: calcularFatura(c, txs) }))
@@ -39,120 +39,135 @@ export default function Dashboard() {
     .sort((a, b) => a.proximaData.localeCompare(b.proximaData))
     .slice(0, 4)
 
-  return (
-    <>
-      <PageHeader title="Olá 👋" subtitle={fmtMonthLabel(mk)} />
+  const totalBancos = totalNosBancos(contas, txs)
 
-      {/* Atalhos rápidos (mobile) */}
-      <div className="flex gap-2 mb-3 overflow-x-auto md:hidden">
-        {[{ to: '/bancos', label: 'Bancos', icon: Building2 }, { to: '/horas', label: 'Horas', icon: Calculator }, { to: '/recorrentes', label: 'Recorrentes', icon: Repeat }, { to: '/relatorios', label: 'Relatórios', icon: ChartPie }].map(({ to, label, icon: Icon }) => (
-          <Link key={to} to={to} className="shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-            <Icon className="h-3.5 w-3.5 text-emerald-500" /> {label}
-          </Link>
-        ))}
+  return (
+    <div className="-mt-2">
+      {/* ── Hero violeta (foto 1) ─────────────────────────────── */}
+      <div className="hero-violeta rounded-b-[2rem] -mx-4 px-4 pt-6 pb-16">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs text-violet-200/80">Disponível nos bancos</p>
+          <p className="text-[2.6rem] leading-tight font-extrabold tracking-tight tabular-nums">
+            {fmtMoney(totalBancos || profile.guardado)}
+          </p>
+          <p className="text-xs text-violet-200/80 mt-1">
+            Gasto em {fmtMonthLabel(mk)}: <strong className="text-white">{fmtMoney(gasto)}</strong>
+            {emHoras && <> · 🕐 {emHoras.horas.toFixed(1)}h de trabalho</>}
+          </p>
+        </div>
       </div>
 
-      {contas.length > 0 ? (
-        <Card className="p-4 mb-3">
-          <div className="flex items-baseline justify-between mb-2">
-            <p className="text-sm font-semibold flex items-center gap-1.5"><Building2 className="h-4 w-4 text-emerald-500" /> Nos seus bancos</p>
-            <span className="text-xl font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">{fmtMoney(totalNosBancos(contas, txs))}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {contas.map((c) => (
-              <Link key={c.id} to="/bancos" className="rounded-xl bg-slate-50 dark:bg-slate-800/50 px-3 py-2 flex items-center justify-between">
-                <span className="text-xs text-slate-500 dark:text-slate-400 truncate">{c.nome}</span>
-                <span className="text-sm font-semibold tabular-nums">{fmtMoney(saldoConta(c, txs))}</span>
-              </Link>
-            ))}
-          </div>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <CardResumo titulo="Guardado" valor={profile.guardado} cor="text-emerald-600 dark:text-emerald-400" />
-          <CardResumo titulo="Disponível" valor={profile.disponivel} cor="text-sky-600 dark:text-sky-400" />
+      {/* Card de ações sobreposto ao hero */}
+      <div className="-mt-11 max-w-3xl mx-auto">
+        <div className="rounded-3xl bg-slate-900 border border-slate-800 shadow-xl shadow-black/40 p-3 flex justify-around">
+          {[
+            { to: '/quickadd', state: { quickAdd: true }, label: 'Registrar', icon: Plus, destaque: true },
+            { to: '/bancos', label: 'Bancos', icon: Building2 },
+            { to: '/cartoes', label: 'Faturas', icon: CreditCard },
+            { to: '/lancamentos', label: 'Extrato', icon: ArrowLeftRight },
+          ].map(({ to, state, label, icon: Icon, destaque }) => (
+            <Link key={to} to={to} state={state} className="flex flex-col items-center gap-1.5 px-2 py-1">
+              <span className={`h-10 w-10 rounded-2xl grid place-items-center ${destaque ? 'bg-[#f6d353] text-slate-950' : 'bg-slate-800 text-[#f6d353]'}`}>
+                <Icon className="h-5 w-5" />
+              </span>
+              <span className="text-[11px] font-medium text-slate-300">{label}</span>
+            </Link>
+          ))}
         </div>
-      )}
+      </div>
 
-      <Card className="p-4 mb-3">
-        <div className="flex items-baseline justify-between">
-          <div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Gasto do mês</p>
-            <p className="text-2xl font-extrabold tabular-nums">{fmtMoney(gasto)}</p>
+      <div className="mt-4 space-y-3">
+        {/* ── Bancos ──────────────────────────────────────────── */}
+        {contas.length > 0 ? (
+          <section>
+            <div className="flex items-baseline justify-between px-1 mb-2">
+              <h2 className="text-sm font-bold">Nos seus bancos</h2>
+              <Link to="/bancos" className="text-xs text-[#f6d353] font-semibold inline-flex items-center">gerenciar <ArrowUpRight className="h-3.5 w-3.5" /></Link>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {contas.map((c) => (
+                <Link key={c.id} to="/bancos" className="rounded-2xl bg-slate-900 border border-slate-800 px-4 py-3 flex flex-col gap-0.5 hover:border-[#f6d353]/40 transition-colors">
+                  <span className="text-xs text-slate-400 truncate">{c.nome}</span>
+                  <span className="text-lg font-bold tabular-nums">{fmtMoney(saldoConta(c, txs))}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            <CardResumo titulo="Guardado" valor={profile.guardado} cor="text-[#f6d353]" />
+            <CardResumo titulo="Disponível" valor={profile.disponivel} />
           </div>
-          <div className="text-right">
-            <p className="text-xs text-slate-500 dark:text-slate-400">Média/dia</p>
-            <p className="text-sm font-semibold tabular-nums">{fmtMoney(mediaDiaria(txs, mk))}</p>
-          </div>
-        </div>
-        {emHoras && (
-          <p className="text-xs text-slate-400 mt-2">
-            🕐 Equivale a <strong className="text-slate-600 dark:text-slate-300">{emHoras.horas.toFixed(1)}h</strong> do seu trabalho
-            ({fmtMoney(vh)}/hora)
-          </p>
         )}
-      </Card>
 
-      <Link to="/quickadd" state={{ quickAdd: true }}
-        className="flex items-center gap-3 rounded-2xl p-4 mb-3 bg-emerald-600/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-600/15 transition-colors">
-        <Sparkles className="h-5 w-5 shrink-0" />
-        <div className="flex-1">
-          <p className="text-sm font-semibold">Registrar gasto por texto</p>
-          <p className="text-xs opacity-80">“ifood 45,90” — funciona offline com regras locais</p>
-        </div>
-        <ArrowRight className="h-4 w-4" />
-      </Link>
-
-      <Card className="p-4 mb-3">
-        <p className="text-sm font-semibold mb-2">Gastos por categoria</p>
-        <GraficoCategoria dados={donut} />
-      </Card>
-
-      {faturas.length > 0 && (
-        <Card className="p-4 mb-3">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-semibold flex items-center gap-1.5"><CreditCard className="h-4 w-4" /> Faturas</p>
-            <Link to="/cartoes" className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">ver todas</Link>
-          </div>
-          <ul className="space-y-2">
-            {faturas.map(({ card, f }) => (
-              <li key={card.id} className="flex items-center justify-between text-sm">
-                <span>
-                  {card.nome}
-                  <span className="text-xs text-slate-400 ml-2">vence {fmtDateShort(f.vencimento)}</span>
-                </span>
-                <span className="font-semibold tabular-nums">{fmtMoney(f.aberta)}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-
-      {proximasRecs.length > 0 && (
+        {/* ── Média/dia ───────────────────────────────────────── */}
         <Card className="p-4">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-semibold flex items-center gap-1.5"><Repeat className="h-4 w-4" /> Próximos lançamentos</p>
-            <Link to="/recorrentes" className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">ver todas</Link>
+          <div className="flex items-baseline justify-between">
+            <div>
+              <p className="text-xs text-slate-400">Média por dia</p>
+              <p className="text-xl font-extrabold tabular-nums">{fmtMoney(mediaDiaria(txs, mk))}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-slate-400">Valor da hora</p>
+              <p className="text-xl font-extrabold tabular-nums text-[#f6d353]">{fmtMoney(vh)}</p>
+            </div>
           </div>
-          <ul className="space-y-2">
-            {proximasRecs.map((r) => {
-              const dias = diasAte(r.proximaData)
-              return (
-                <li key={r.id} className="flex items-center justify-between text-sm">
-                  <span>
-                    {r.descricao}
-                    <span className="text-xs text-slate-400 ml-2">
-                      {dias <= 0 ? 'hoje' : `em ${dias} dia${dias > 1 ? 's' : ''}`}
-                    </span>
-                  </span>
-                  <span className="font-semibold tabular-nums">{fmtMoney(r.valor)}</span>
-                </li>
-              )
-            })}
-          </ul>
         </Card>
-      )}
-    </>
+
+        {/* ── Gastos por categoria (radial glow) ──────────────── */}
+        <Card className="p-4">
+          <p className="text-sm font-bold mb-2">Gastos por categoria</p>
+          <GraficoCategoria dados={donut} />
+        </Card>
+
+        {/* ── Faturas ─────────────────────────────────────────── */}
+        {faturas.length > 0 && (
+          <Card className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-bold flex items-center gap-1.5"><CreditCard className="h-4 w-4 text-[#f6d353]" /> Faturas</p>
+              <Link to="/cartoes" className="text-xs text-[#f6d353] font-semibold">ver todas</Link>
+            </div>
+            <ul className="space-y-2">
+              {faturas.map(({ card, f }) => (
+                <li key={card.id} className="flex items-center justify-between text-sm">
+                  <span>
+                    {card.nome}
+                    <span className="text-xs text-slate-500 ml-2">vence {fmtDateShort(f.vencimento)}</span>
+                  </span>
+                  <span className="font-bold tabular-nums">{fmtMoney(f.aberta)}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )}
+
+        {/* ── Próximos lançamentos ────────────────────────────── */}
+        {proximasRecs.length > 0 && (
+          <Card className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-bold flex items-center gap-1.5"><Repeat className="h-4 w-4 text-violet-400" /> Próximos lançamentos</p>
+              <Link to="/recorrentes" className="text-xs text-[#f6d353] font-semibold">ver todas</Link>
+            </div>
+            <ul className="space-y-2">
+              {proximasRecs.map((r) => {
+                const dias = diasAte(r.proximaData)
+                return (
+                  <li key={r.id} className="flex items-center justify-between text-sm">
+                    <span>
+                      {r.descricao}
+                      <span className="text-xs text-slate-500 ml-2">
+                        {dias <= 0 ? 'hoje' : `em ${dias} dia${dias > 1 ? 's' : ''}`}
+                      </span>
+                    </span>
+                    <span className="font-bold tabular-nums">{fmtMoney(r.valor)}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </Card>
+        )}
+      </div>
+    </div>
   )
 }
 

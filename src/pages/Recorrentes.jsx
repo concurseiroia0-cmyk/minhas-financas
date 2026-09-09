@@ -51,7 +51,7 @@ export default function Recorrentes() {
               <Zap className="h-4 w-4" /> Gerar {pendentes}
             </button>
           )}
-          <button onClick={() => setFormAberto(true)} className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 inline-flex items-center gap-1">
+          <button onClick={() => setFormAberto(true)} className="rounded-xl px-3.5 py-2 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e] inline-flex items-center gap-1">
             <Plus className="h-4 w-4" /> Nova
           </button>
         </div>
@@ -69,7 +69,7 @@ export default function Recorrentes() {
                   <div>
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{r.descricao}</p>
-                      <Badge className={r.tipo === 'receita' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300'}>
+                      <Badge className={r.tipo === 'receita' ? 'bg-[#f6d353]/15 text-[#f6d353]' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300'}>
                         {r.tipo === 'receita' ? 'receita' : 'despesa'}
                       </Badge>
                       {r.metodo === 'credito' && r.cardId && <Badge className="bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">cartão</Badge>}
@@ -79,7 +79,7 @@ export default function Recorrentes() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className={`font-bold tabular-nums ${r.tipo === 'receita' ? 'text-emerald-600 dark:text-emerald-400' : ''}`}>{fmtMoney(r.valor)}</p>
+                    <p className={`font-bold tabular-nums ${r.tipo === 'receita' ? 'text-[#f6d353]' : ''}`}>{fmtMoney(r.valor)}</p>
                     {dias != null && (
                       <p className={`text-xs ${dias <= 3 ? 'text-amber-600 dark:text-amber-400 font-medium' : 'text-slate-400'}`}>
                         {dias <= 0 ? 'vence hoje' : `em ${dias} dia${dias > 1 ? 's' : ''}`}
@@ -144,7 +144,7 @@ function RecorrenciaForm({ open, onClose, categorias, cartoes }) {
 
   return (
     <Modal open={open} onClose={onClose} title="Nova recorrente"
-      footer={<button onClick={salvar} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500">Salvar</button>}>
+      footer={<button onClick={salvar} className="w-full rounded-xl py-2.5 text-sm font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e]">Salvar</button>}>
       <Field label="Descrição"><input className={inputCls} value={form.descricao} onChange={(e) => set('descricao', e.target.value)} placeholder="Ex.: Netflix, Aluguel" autoFocus /></Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Valor (R$)"><input className={inputCls} inputMode="decimal" value={form.valor} onChange={(e) => set('valor', e.target.value)} placeholder="39,90" /></Field>
