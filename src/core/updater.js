@@ -53,6 +53,12 @@ export function iniciarUpdater({ aoDetectar, aoAtualizar } = {}) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`, { updateViaCache: 'none' })
     .then((reg) => {
+      // Transição: se há worker novo já instalado esperando (de versões
+      // anteriores sem skipWaiting), promove agora — o controllerchange
+      // dispara o reload logo abaixo.
+      if (reg.waiting && navigator.serviceWorker.controller) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' })
+      }
       reg.addEventListener('updatefound', () => {
         const novo = reg.installing
         novo?.addEventListener('statechange', () => {
