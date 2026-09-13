@@ -4,9 +4,12 @@ import { HashRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 import { useSettings } from './store/useSettings.js'
+import { iniciarUpdater } from './core/updater.js'
+import { uiDetectouUpdate } from './components/UpdateBanner.jsx'
 import './db/repo.js'
 
-// Service worker é registrado pelo <UpdateBanner /> (atualização automática)
+// Atualização automática: roda no boot, antes de qualquer tela
+iniciarUpdater({ aoDetectar: uiDetectouUpdate })
 
 useSettings.getState().load()
 

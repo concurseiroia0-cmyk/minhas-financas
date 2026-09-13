@@ -10,6 +10,9 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      // O registro é feito no <UpdateBanner /> com updateViaCache:'none'
+      // (o sw.js é sempre buscado na rede — sem atraso de cache do GitHub Pages)
+      injectRegister: false,
       includeAssets: ['favicon.svg'],
       manifest: {
         name: 'Minhas Finanças',

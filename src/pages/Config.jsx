@@ -181,7 +181,7 @@ export default function Config() {
       </Card>
 
       <p className="text-center text-[11px] text-slate-400 pb-4">
-        Minhas Finanças v0.2 · PWA offline-first · IA gratuita que só sugere
+        Minhas Finanças v0.3 · PWA offline-first · atualiza sozinho · IA gratuita que só sugere
       </p>
 
       <ConfirmDialog
