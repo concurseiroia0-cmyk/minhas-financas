@@ -40,6 +40,25 @@
   --color-ink: #0a0a0c;
 }
 
+/*
+  Tema claro de verdade: o app inteiro é escrito com a escala "ink" (slate),
+  então basta INVERTER os tokens no :root quando o .dark não está presente.
+  Zero mudança de markup — texto escuro em fundo claro automaticamente.
+*/
+html:not(.dark) {
+  --color-slate-50: #0a0a0c;
+  --color-slate-100: #17171c;
+  --color-slate-200: #232329;
+  --color-slate-300: #35353e;
+  --color-slate-400: #5a5a66;
+  --color-slate-500: #6c6c7a;
+  --color-slate-600: #8f8f9e;
+  --color-slate-700: #b9b9c6;
+  --color-slate-800: #d9d9e2;
+  --color-slate-900: #e8e8ee;
+  --color-slate-950: #f4f4f8;
+}
+
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
@@ -51,6 +70,17 @@
       radial-gradient(60rem 30rem at 85% -10%, rgb(124 58 237 / 0.13), transparent 60%),
       radial-gradient(50rem 25rem at -10% 0%, rgb(246 211 83 / 0.05), transparent 55%);
     background-attachment: fixed;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  html:not(.dark) body {
+    background-image:
+      radial-gradient(60rem 30rem at 85% -10%, rgb(124 58 237 / 0.10), transparent 60%),
+      radial-gradient(50rem 25rem at -10% 0%, rgb(246 211 83 / 0.15), transparent 55%),
+      linear-gradient(180deg, #eceaf4 0%, #f6f5fa 100%);
+  }
+  html:not(.dark) {
+    scrollbar-color: #b9b9c6 #f4f4f8;
+    color-scheme: light;
   }
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button {
@@ -69,6 +99,63 @@
 @utility pt-safe {
   padding-top: env(safe-area-inset-top, 0px);
 }
+/* Espaço para o bottom nav flutuante (iOS 26) */
+@utility pb-nav {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6.75rem);
+}
+
+/* ── Liquid Glass (estilo iOS 26) ──────────────────────── */
+/*
+ * Glass estendido em 3 níveis:
+ *  .glass          → vidro neutro para pill/overlay flutuante
+ *  .glass-strong   → vidro de alto contraste (banner de update, toasts)
+ *  .glass-card     → superfície padrão de cards (antigo bg-slate-900)
+ *  .glass-soft     → painel translúcido para itens aninhados dentro do vidro
+ * Todos com blur, saturação, borda de luz e brilho interno — o mesmo
+ * comportamento do iOS 26, adaptado ao tema fintech escuro.
+ */
+@utility glass {
+  background: rgb(23 23 28 / 0.55);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow:
+    0 12px 32px rgb(0 0 0 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.14);
+}
+/* Vidro mais contrastado (banner de update, toasts) */
+@utility glass-strong {
+  background: rgb(20 20 24 / 0.72);
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  box-shadow:
+    0 16px 40px rgb(0 0 0 / 0.5),
+    inset 0 1px 0 rgb(255 255 255 / 0.18);
+}
+/* Superfície padrão dos cards — substitui bg-slate-900 + border-slate-800.
+   A borda vem do markup (border border-white/10) para permitir destaques. */
+@utility glass-card {
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.045), rgb(255 255 255 / 0) 55%),
+    rgb(23 23 28 / 0.60);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  box-shadow:
+    0 10px 30px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 rgb(255 255 255 / 0.12);
+}
+/* Painel translúcido para itens dentro de um glass-card (listas, gráficos) */
+@utility glass-soft {
+  background: rgb(255 255 255 / 0.045);
+}
+/* Realce do item ativo dentro do vidro */
+@utility glass-highlight {
+  background: rgb(255 255 255 / 0.12);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.16),
+    0 0 20px rgb(246 211 83 / 0.10);
+}
 
 /* Hero violeta do topo (Dashboard) */
 @utility hero-violeta {
@@ -81,6 +168,95 @@
 /* Anel brilhante amarelo (gráfico analítico) */
 @utility glow-butter {
   filter: drop-shadow(0 0 6px rgb(246 211 83 / 0.45));
+}
+
+/* Tema claro: os vidros invertem para vidro branco */
+html:not(.dark) .glass {
+  background: rgb(255 255 255 / 0.60);
+  border-color: rgb(17 17 20 / 0.08);
+  box-shadow:
+    0 12px 32px rgb(17 17 20 / 0.10),
+    inset 0 1px 0 rgb(255 255 255 / 0.95);
+}
+html:not(.dark) .glass-strong {
+  background: rgb(255 255 255 / 0.80);
+  border-color: rgb(17 17 20 / 0.08);
+  box-shadow:
+    0 16px 40px rgb(17 17 20 / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 1);
+}
+html:not(.dark) .glass-card {
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.35) 60%),
+    rgb(255 255 255 / 0.50);
+  box-shadow:
+    0 10px 30px rgb(17 17 20 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+}
+html:not(.dark) .glass-soft {
+  background: rgb(17 17 20 / 0.045);
+}
+/* Botões primários: texto sempre ink escuro sobre o amarelo manteiga */
+html:not(.dark) .bg-\[\#f6d353\] {
+  color: #0a0a0c;
+}
+html:not(.dark) .hero-violeta {
+  color: #f5f5f7;
+  background:
+    radial-gradient(120% 140% at 85% -20%, rgb(167 139 250 / 0.45) 0%, transparent 45%),
+    radial-gradient(130% 120% at 15% -30%, rgb(139 92 246 / 0.5) 0%, transparent 55%),
+    linear-gradient(160deg, #7c3aed 0%, #6d28d9 55%, #5b21b6 100%);
+}
+html:not(.dark) .glass-highlight {
+  background: rgb(246 211 83 / 0.22);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.8),
+    0 0 20px rgb(246 211 83 / 0.25);
+}
+html:not(.dark) ::selection {
+  background: rgb(124 58 237 / 0.22);
+}
+
+/* ── Animações de entrada (liquid glass entra deslizando/fading) ── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.anim-rise {
+  animation: riseIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-fade {
+  animation: fadeIn 0.3s ease both;
+}
+/* Escalonamento: cada filho de [data-stagger] entra em sequência */
+[data-stagger] > * {
+  animation: riseIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+[data-stagger] > *:nth-child(1) { animation-delay: 0.04s; }
+[data-stagger] > *:nth-child(2) { animation-delay: 0.08s; }
+[data-stagger] > *:nth-child(3) { animation-delay: 0.12s; }
+[data-stagger] > *:nth-child(4) { animation-delay: 0.16s; }
+[data-stagger] > *:nth-child(5) { animation-delay: 0.20s; }
+[data-stagger] > *:nth-child(6) { animation-delay: 0.24s; }
+[data-stagger] > *:nth-child(7) { animation-delay: 0.28s; }
+[data-stagger] > *:nth-child(8) { animation-delay: 0.32s; }
+[data-stagger] > *:nth-child(n + 9) { animation-delay: 0.36s; }
+
+/* Hero do Dashboard entra por cima, em cascade */
+.hero-violeta > div > * {
+  animation: riseIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-violeta > div > *:nth-child(2) { animation-delay: 0.06s; }
+.hero-violeta > div > *:nth-child(3) { animation-delay: 0.12s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-rise, .anim-fade, [data-stagger] > *, .hero-violeta > div > * {
+    animation: none;
+  }
 }
 
 /* ── Chef animado (mascote do app) ─────────────────────── */
@@ -113,6 +289,9 @@
 ::-webkit-scrollbar-thumb {
   background: #3a3a44;
   border-radius: 999px;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #b9b9c6;
 }
 ::selection {
   background: rgb(246 211 83 / 0.3);

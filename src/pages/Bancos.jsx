@@ -27,7 +27,7 @@ export default function Bancos() {
       <PageHeader title="Bancos" subtitle="Quanto tem guardado e gasto em cada banco">
         <div className="flex gap-2">
           <button onClick={() => setTransfAberta(true)} disabled={contas.length < 2}
-            className="rounded-xl px-3 py-2 text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 inline-flex items-center gap-1">
+            className="rounded-xl px-3 py-2 text-sm font-semibold border border-white/12 hover:bg-white/10 disabled:opacity-40 inline-flex items-center gap-1">
             <ArrowLeftRight className="h-4 w-4" /> Transferir
           </button>
           <button onClick={() => { setEditando(null); setFormAberto(true) }}
@@ -45,7 +45,7 @@ export default function Bancos() {
       {contas.length === 0 ? (
         <EmptyState icon={Building2} titulo="Nenhum banco cadastrado" sub="Ex.: Nubank com R$ 400 guardados, Banco do Brasil com R$ 300." />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3" data-stagger>
           {contas.map((conta) => {
             const saldo = saldoConta(conta, txs)
             const gasto = gastoDoMesConta(conta, txs, mk)

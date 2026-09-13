@@ -95,11 +95,11 @@ export default function Config() {
             </p>
             <div className="flex flex-wrap gap-2">
               <button onClick={() => notificar('Teste de notificação 🔔', 'Está funcionando! Você será avisado dos vencimentos.', 'teste')}
-                className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-700 hover:bg-slate-800">
+                className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-white/12 hover:bg-white/10">
                 Enviar teste
               </button>
               <button onClick={() => verificarVencimentos({ forcar: true })}
-                className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-700 hover:bg-slate-800">
+                className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-white/12 hover:bg-white/10">
                 Verificar vencimentos agora
               </button>
             </div>
@@ -130,7 +130,7 @@ export default function Config() {
         <div className="grid grid-cols-2 gap-2">
           {['dark', 'light'].map((t) => (
             <button key={t} onClick={() => settings.update({ tema: t })}
-              className={`rounded-xl py-2.5 text-sm font-semibold border ${settings.tema === t ? 'border-[#f6d353] bg-[#f6d353]/10 text-[#f6d353]' : 'border-slate-300 dark:border-slate-700'}`}>
+              className={`rounded-xl py-2.5 text-sm font-semibold border ${settings.tema === t ? 'border-[#f6d353] bg-[#f6d353]/10 text-[#f6d353]' : 'border-white/12'}`}>
               {t === 'dark' ? '🌙 Escuro' : '☀️ Claro'}
             </button>
           ))}
@@ -152,7 +152,7 @@ export default function Config() {
         <div className="flex gap-2">
           <input className={inputCls} value={novaCat} onChange={(e) => setNovaCat(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && addCategoria()} placeholder="Nova categoria…" />
-          <button onClick={addCategoria} className="h-11 w-11 shrink-0 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 flex items-center justify-center" aria-label="Adicionar categoria">
+          <button onClick={addCategoria} className="h-11 w-11 shrink-0 rounded-xl glass-soft border border-white/12 text-white flex items-center justify-center hover:bg-white/10" aria-label="Adicionar categoria">
             <Plus className="h-5 w-5" />
           </button>
         </div>
@@ -162,10 +162,10 @@ export default function Config() {
       <Card className="p-4 mb-3">
         <p className="text-sm font-semibold flex items-center gap-1.5 mb-3"><Database className="h-4 w-4 text-[#f6d353]" /> Dados</p>
         <div className="flex flex-wrap gap-2">
-          <button onClick={exportar} className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-2">
+          <button onClick={exportar} className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-white/12 hover:bg-white/10 inline-flex items-center gap-2">
             <Download className="h-4 w-4" /> Exportar backup
           </button>
-          <button onClick={() => fileRef.current?.click()} className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-2">
+          <button onClick={() => fileRef.current?.click()} className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-white/12 hover:bg-white/10 inline-flex items-center gap-2">
             <Upload className="h-4 w-4" /> Importar backup
           </button>
           <input ref={fileRef} type="file" accept="application/json" className="hidden" onChange={importar} />

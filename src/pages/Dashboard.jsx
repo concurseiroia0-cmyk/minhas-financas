@@ -74,7 +74,7 @@ export default function Dashboard() {
       <div className="hero-violeta rounded-b-[2rem] -mx-4 px-4 pt-6 pb-16">
         <div className="max-w-3xl mx-auto">
           <p className="text-xs text-violet-200/80">Disponível nos bancos</p>
-          <p className="text-[2.6rem] leading-tight font-extrabold tracking-tight tabular-nums">
+          <p className="text-[clamp(2rem,9vw,2.6rem)] leading-tight font-extrabold tracking-tight tabular-nums break-all">
             {fmtMoney(totalBancos || profile.guardado)}
           </p>
           <p className="text-xs text-violet-200/80 mt-1">
@@ -86,7 +86,7 @@ export default function Dashboard() {
 
       {/* Card de ações sobreposto ao hero */}
       <div className="-mt-11 max-w-3xl mx-auto">
-        <div className="rounded-3xl bg-slate-900 border border-slate-800 shadow-xl shadow-black/40 p-3 flex justify-around">
+        <div className="rounded-3xl glass-card border border-white/12 shadow-xl shadow-black/40 p-3 flex justify-around">
           {[
             { to: '/quickadd', state: { quickAdd: true }, label: 'Registrar', icon: Plus, destaque: true },
             { to: '/bancos', label: 'Bancos', icon: Building2 },
@@ -103,7 +103,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-3" data-stagger>
         {/* ── Bancos ──────────────────────────────────────────── */}
         {contas.length > 0 ? (
           <section>
@@ -113,7 +113,7 @@ export default function Dashboard() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               {contas.map((c) => (
-                <Link key={c.id} to="/bancos" className="rounded-2xl bg-slate-900 border border-slate-800 px-4 py-3 flex flex-col gap-0.5 hover:border-[#f6d353]/40 transition-colors">
+                <Link key={c.id} to="/bancos" className="rounded-2xl glass-card border border-white/10 px-4 py-3 flex flex-col gap-0.5 hover:border-[#f6d353]/40 transition-colors">
                   <span className="text-xs text-slate-400 truncate">{c.nome}</span>
                   <span className="text-lg font-bold tabular-nums">{fmtMoney(saldoConta(c, txs))}</span>
                 </Link>
@@ -139,7 +139,7 @@ export default function Dashboard() {
                 const p = progressoMeta(g)
                 return (
                   <Link key={g.id} to="/metas"
-                    className="shrink-0 w-40 rounded-2xl bg-slate-900 border border-slate-800 p-3 flex flex-col items-center gap-1.5 hover:border-slate-700 transition-colors">
+                    className="shrink-0 w-40 rounded-2xl glass-card border border-white/10 p-3 flex flex-col items-center gap-1.5 hover:border-white/20 transition-colors">
                     <AnelProgresso percent={p.pct} cor={p.cor} tamanho={72} />
                     <p className="text-xs font-semibold truncate max-w-full">{g.titulo}</p>
                     <p className="text-[11px] tabular-nums" style={{ color: p.cor }}>{p.pctExibicao}% · {fmtMoney(g.guardado)}</p>
@@ -157,7 +157,7 @@ export default function Dashboard() {
 
         {/* ── Notificações (pedido de permissão) ─────────────── */}
         {permissao === 'default' && (
-          <button onClick={ativarNotificacoes} className="w-full text-left rounded-2xl bg-slate-900 border border-[#f6d353]/30 p-4 flex items-center gap-3 hover:border-[#f6d353]/60 transition-colors">
+          <button onClick={ativarNotificacoes} className="w-full text-left rounded-2xl glass-card border border-[#f6d353]/30 p-4 flex items-center gap-3 hover:border-[#f6d353]/60 transition-colors">
             <span className="h-10 w-10 rounded-full bg-[#f6d353]/15 grid place-items-center shrink-0">
               <Bell className="h-5 w-5 text-[#f6d353]" />
             </span>

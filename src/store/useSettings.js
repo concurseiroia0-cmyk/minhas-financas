@@ -1,7 +1,5 @@
 import { create } from 'zustand'
 import { db } from '../db/schema.js'
-import { saveProfile } from '../db/repo.js'
-import { seedDemo } from '../db/demo.js'
 
 const SETTING_KEY = 'geral'
 
@@ -39,19 +37,6 @@ function aplicarTema(tema) {
   document.documentElement.classList.toggle('dark', tema === 'dark')
 }
 
-// ---------- Dados demo (só se o banco estiver vazio) ----------
-
-export async function carregarDadosDemo() {
-  const count = await db.transactions.count()
-  const temProfile = await db.profile.get('me')
-  if (count > 0 || temProfile) return false
-  await saveProfile({
-    regime: 'mensal', rendaLiquida: 3200, diasTrabalhados: 22, horasPorDia: 8,
-    guardado: 6500, disponivel: 850, moeda: 'BRL',
-  })
-  await seedDemo()
-  return true
-}
 
 // ---------- Status de conexão ----------
 

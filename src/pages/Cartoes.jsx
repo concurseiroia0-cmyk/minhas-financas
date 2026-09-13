@@ -31,7 +31,7 @@ export default function Cartoes() {
         <EmptyState icon={CreditCard} titulo="Nenhum cartão" sub="Cadastre um cartão para acompanhar faturas e limite." />
       )}
 
-      <div className="space-y-3">
+      <div className="space-y-3" data-stagger>
         {cards.map((card) => {
           const f = calcularFatura(card, txs)
           const usoPct = card.limite > 0 ? Math.min(100, Math.round(((f.aberta + f.futuras) / card.limite) * 100)) : 0
@@ -46,7 +46,7 @@ export default function Cartoes() {
                   </p>
                 </div>
                 <div className="flex gap-1">
-                  <button onClick={() => setFaturaAberta({ card, f })} className="text-xs rounded-lg px-2.5 py-1.5 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-1">
+                  <button onClick={() => setFaturaAberta({ card, f })} className="text-xs rounded-lg px-2.5 py-1.5 border border-white/12 hover:bg-white/10 inline-flex items-center gap-1">
                     <ListOrdered className="h-3.5 w-3.5" /> Fatura
                   </button>
                   <button onClick={() => setParaExcluir(card)} className="text-xs rounded-lg px-2.5 py-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30">Excluir</button>
@@ -79,7 +79,7 @@ export default function Cartoes() {
 
               <div className="flex gap-2">
                 <button onClick={() => setPagamentoAberto({ card, f })} disabled={f.aberta <= 0}
-                  className="flex-1 rounded-xl py-2 text-sm font-semibold bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-30">
+                  className="flex-1 rounded-xl py-2 text-sm font-semibold glass-soft border border-white/12 text-white disabled:opacity-30 hover:bg-white/10">
                   Pagar fatura
                 </button>
                 <button onClick={() => setCompraAberta(card)}

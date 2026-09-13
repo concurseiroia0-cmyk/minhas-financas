@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { saveProfile, salvarConta } from '../db/repo.js'
-import { carregarDadosDemo } from '../store/useSettings.js'
 import { Field, inputCls, Spinner } from '../components/ui.jsx'
-import { Sparkles, Building2, Plus, X } from 'lucide-react'
+import { ChefIcon } from '../components/ChefIcon.jsx'
+import { Building2, Plus, X } from 'lucide-react'
 
 export default function Onboarding({ onConcluir }) {
   const nav = useNavigate()
@@ -36,12 +36,6 @@ export default function Onboarding({ onConcluir }) {
     concluir()
   }
 
-  async function usarDemo() {
-    setCarregando('demo')
-    await carregarDadosDemo()
-    concluir()
-  }
-
   const setBanco = (i, k, v) => setBancos((bs) => bs.map((b, j) => (j === i ? { ...b, [k]: v } : b)))
   const removeBanco = (i) => setBancos((bs) => bs.filter((_, j) => j !== i))
   const addBanco = () => setBancos((bs) => [...bs, { nome: '', guardado: '' }])
@@ -50,12 +44,12 @@ export default function Onboarding({ onConcluir }) {
     <div className="min-h-dvh flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
-          <p className="text-4xl mb-2">💰</p>
+          <ChefIcon className="h-20 w-20 mx-auto mb-3" />
           <h1 className="text-2xl font-extrabold">Minhas Finanças</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Controle offline-first. A IA só sugere — você confirma.</p>
         </div>
 
-        <form onSubmit={comecarDoZero} className="rounded-2xl bg-slate-900 border border-slate-800 p-5 shadow-sm">
+        <form onSubmit={comecarDoZero} className="rounded-3xl glass-card border border-white/12 p-5 shadow-xl shadow-black/40 anim-rise">
           <Field label="Renda líquida (R$)">
             <input className={inputCls} inputMode="decimal" placeholder="3200" value={form.rendaLiquida} onChange={(e) => set('rendaLiquida', e.target.value)} />
           </Field>
@@ -90,17 +84,7 @@ export default function Onboarding({ onConcluir }) {
           )}
 
           <button type="submit" disabled={!!carregando} className="w-full rounded-xl py-3 font-semibold bg-[#f6d353] text-slate-950 hover:bg-[#f2c62e] disabled:opacity-50 flex items-center justify-center gap-2">
-            {carregando === 'zero' ? <Spinner /> : null} Começar
-          </button>
-
-          <div className="flex items-center gap-2 my-4">
-            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
-            <span className="text-xs text-slate-400">ou</span>
-            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
-          </div>
-
-          <button type="button" onClick={usarDemo} disabled={!!carregando} className="w-full rounded-xl py-3 font-semibold border border-[#f6d353]/40 text-[#f6d353] hover:bg-[#f2c62e]/10 disabled:opacity-50 flex items-center justify-center gap-2">
-            {carregando === 'demo' ? <Spinner /> : <Sparkles className="h-4 w-4" />} Explorar com dados de exemplo
+            {carregando ? <Spinner /> : null} Começar
           </button>
         </form>
       </div>

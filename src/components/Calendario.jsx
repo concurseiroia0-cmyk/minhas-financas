@@ -49,11 +49,11 @@ export function Calendario({ transacoesPorDia }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <button onClick={() => navegar(-1)} className="h-9 w-9 rounded-full bg-slate-800 grid place-items-center text-slate-300 hover:bg-slate-700" aria-label="Mês anterior">
+        <button onClick={() => navegar(-1)} className="h-9 w-9 rounded-full glass-soft border border-white/10 grid place-items-center text-slate-300 hover:bg-white/10" aria-label="Mês anterior">
           <ChevronLeft className="h-4.5 w-4.5" />
         </button>
         <span className="text-sm font-bold">{label}</span>
-        <button onClick={() => navegar(1)} className="h-9 w-9 rounded-full bg-slate-800 grid place-items-center text-slate-300 hover:bg-slate-700" aria-label="Próximo mês">
+        <button onClick={() => navegar(1)} className="h-9 w-9 rounded-full glass-soft border border-white/10 grid place-items-center text-slate-300 hover:bg-white/10" aria-label="Próximo mês">
           <ChevronRight className="h-4.5 w-4.5" />
         </button>
       </div>
@@ -80,7 +80,7 @@ export function Calendario({ transacoesPorDia }) {
               )}
               {info && (
                 <span
-                  className={`absolute bottom-0 h-1 w-1 rounded-full ${isHoje ? 'bg-slate-900' : 'bg-[#f6d353]'}`}
+                  className={`absolute bottom-0 h-1 w-1 rounded-full ${isHoje ? 'bg-[#f6d353] ring-1 ring-slate-950/60' : 'bg-[#f6d353]'}`}
                   title={info.qtd > 0 ? `${info.qtd} lançamento(s) · ${fmtMoney(info.total)}` : undefined}
                 />
               )}

@@ -60,7 +60,7 @@ export default function Recorrentes() {
       {recs.length === 0 ? (
         <EmptyState icon={Repeat} titulo="Nenhuma recorrente" sub="Cadastre aluguel, assinaturas, academia… o app gera os lançamentos automaticamente." />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3" data-stagger>
           {ativas.map((r) => {
             const dias = r.proximaData ? diasAte(r.proximaData) : null
             return (

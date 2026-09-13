@@ -66,7 +66,7 @@ const CORES = ['#f6d353', '#a78bfa', '#4ade80', '#f472b6', '#38bdf8',
   '#fb923c', '#f87171', '#2dd4bf', '#e879f9', '#8f8f9e']
 
 db.on('populate', async () => {
-  // Apenas categorias: contas/bancos são criados no Onboarding ou nos dados demo
+  // Apenas categorias: contas/bancos são criados no Onboarding
   await db.categories.bulkAdd(CATEGORIAS_PADRAO.map((nome, i) => ({ id: crypto.randomUUID(), nome, cor: CORES[i % CORES.length] })))
 })
 

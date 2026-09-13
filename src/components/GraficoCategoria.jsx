@@ -119,7 +119,7 @@ export function GraficoEvolucao({ meses }) {
   }
   return (
     <div>
-      <div className="flex items-end gap-2.5 h-44 rounded-2xl bg-slate-900/70 border border-slate-800 px-3 pt-3">
+      <div className="flex items-end gap-2.5 h-44 rounded-2xl glass-soft border border-white/8 px-3 pt-3">
         {meses.map((m) => (
           <div key={m.mes} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
             <div className="w-full flex items-end justify-center gap-1 h-full">

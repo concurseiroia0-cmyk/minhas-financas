@@ -3,9 +3,10 @@ import { Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Plus, LayoutDashboard, ListOrdered, CreditCard, Repeat, Calculator, ChartPie, Settings2, Building2, Target } from 'lucide-react'
 import { db } from './db/schema.js'
-import { useSettings, carregarDadosDemo } from './store/useSettings.js'
+import { useSettings } from './store/useSettings.js'
 import { BadgeOffline } from './components/ui.jsx'
 import { ChefIcon } from './components/ChefIcon.jsx'
+import UpdateBanner from './components/UpdateBanner.jsx'
 import { agendarChecagemDiaria } from './core/notifications.js'
 import Dashboard from './pages/Dashboard.jsx'
 import Lancamentos from './pages/Lancamentos.jsx'
@@ -41,10 +42,8 @@ export default function App() {
   const quickAddAberto = location.state?.quickAdd
 
   useEffect(() => {
-    if (loaded && !pronto) {
-      carregarDadosDemo().finally(() => setPronto(true))
-    }
-  }, [loaded, pronto])
+    if (loaded) setPronto(true)
+  }, [loaded])
 
   useEffect(() => {
     if (loaded && pronto) agendarChecagemDiaria()
@@ -68,10 +67,11 @@ export default function App() {
   return (
     <div className="min-h-dvh">
       <BadgeOffline />
+      <UpdateBanner />
 
       {/* Sidebar desktop */}
       {!hideNav && (
-        <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r border-slate-800 bg-slate-950/80 backdrop-blur px-3 py-4 z-30">
+        <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r border-white/10 bg-slate-950/60 backdrop-blur-2xl px-3 py-4 z-30">
           <div className="px-2 mb-6 flex items-center gap-2.5">
             <ChefIcon className="h-9 w-9 shrink-0" animado={false} />
             <div>
@@ -82,7 +82,7 @@ export default function App() {
           <nav className="flex-1 space-y-0.5">
             {NAV.map(({ to, label, icon: Icon }) => (
               <NavLink key={to} to={to} end={to === '/'}
-                className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${isActive ? 'bg-[#f6d353]/10 text-[#f6d353]' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}`}>
+                className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${isActive ? 'glass-highlight text-[#f6d353]' : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'}`}>
                 <Icon className="h-[18px] w-[18px]" /> {label}
               </NavLink>
             ))}
@@ -91,8 +91,9 @@ export default function App() {
         </aside>
       )}
 
-      <main className={`max-w-3xl mx-auto px-4 pt-safe ${hideNav ? 'py-6' : 'md:pl-64 md:pr-6'} pb-28 md:pb-10`}>
-        <Routes>
+      <main className={`max-w-3xl mx-auto px-4 pt-safe ${hideNav ? 'py-6' : 'md:pl-64 md:pr-6'} pb-nav md:pb-10`}>
+        <div key={location.pathname} className="anim-fade">
+          <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/lancamentos" element={<Lancamentos />} />
           <Route path="/bancos" element={<Bancos />} />
@@ -104,29 +105,32 @@ export default function App() {
           <Route path="/config" element={<Config />} />
           <Route path="/quickadd" element={<QuickAdd />} />
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          </Routes>
+        </div>
       </main>
 
       {/* QuickAdd flutuante (desktop) */}
       {!hideNav && <QuickAddFAB />}
 
-      {/* Bottom nav mobile */}
+      {/* Bottom nav mobile — pill flutuante liquid glass (iOS 26) */}
       {!hideNav && (
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-slate-800 bg-slate-950/95 backdrop-blur pb-safe">
-          <div className="grid grid-cols-6">
-            {[NAV[0], NAV[1], NAV[2]].map(({ to, label, icon: Icon }) => (
-              <NavBtn key={to} to={to} label={label} icon={Icon} />
-            ))}
-            <div className="relative flex items-center justify-center">
-              <NavLink to="/quickadd" state={{ quickAdd: true }}
-                className="absolute -top-5 h-12 w-12 rounded-full bg-[#f6d353] text-slate-950 shadow-lg shadow-[#f6d353]/25 ring-4 ring-slate-950 flex items-center justify-center active:scale-95 transition-transform"
-                aria-label="Adicionar rápido">
-                <Plus className="h-6 w-6" />
-              </NavLink>
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 pt-2 pb-safe" aria-label="Navegação principal">
+          <div className="glass mx-auto max-w-md rounded-[1.75rem] px-2 pt-1.5 pb-1.5 anim-rise">
+            <div className="grid grid-cols-6 items-end">
+              {[NAV[0], NAV[1], NAV[2]].map(({ to, label, icon: Icon }) => (
+                <NavBtn key={to} to={to} label={label} icon={Icon} />
+              ))}
+              <div className="flex items-center justify-center">
+                <NavLink to="/quickadd" state={{ quickAdd: true }}
+                  className="h-12 w-12 -translate-y-2.5 rounded-full bg-[#f6d353] text-slate-950 shadow-lg shadow-[#f6d353]/30 ring-4 ring-slate-950/60 flex items-center justify-center active:scale-90 transition-transform"
+                  aria-label="Adicionar rápido">
+                  <Plus className="h-6 w-6" />
+                </NavLink>
+              </div>
+              {[NAV[3], NAV[6]].map(({ to, label, icon: Icon }) => (
+                <NavBtn key={to} to={to} label={label} icon={Icon} />
+              ))}
             </div>
-            {[NAV[3], NAV[6]].map(({ to, label, icon: Icon }) => (
-              <NavBtn key={to} to={to} label={label} icon={Icon} />
-            ))}
           </div>
         </nav>
       )}
@@ -137,9 +141,9 @@ export default function App() {
 function NavBtn({ to, label, icon: Icon }) {
   return (
     <NavLink to={to} end={to === '/'}
-      className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-medium ${isActive ? 'text-[#f6d353]' : 'text-slate-500'}`}>
+      className={({ isActive }) => `flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-2xl text-[10px] font-medium transition-colors ${isActive ? 'glass-highlight text-[#f6d353]' : 'text-slate-400 hover:text-slate-200'}`}>
       <Icon className="h-5 w-5" />
-      <span className="truncate max-w-full px-1">{label}</span>
+      <span className="truncate max-w-full px-1 leading-none">{label}</span>
     </NavLink>
   )
 }

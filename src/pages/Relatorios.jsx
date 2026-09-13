@@ -96,7 +96,7 @@ export default function Relatorios() {
         <div className="flex items-center justify-between mb-1">
           <p className="text-sm font-bold flex items-center gap-1.5"><FileText className="h-4 w-4 text-[#f6d353]" /> Relatório da semana</p>
           <button onClick={() => gerarResumo()} disabled={gerandoResumo}
-            className="text-xs rounded-lg px-2.5 py-1.5 border border-slate-700 hover:bg-slate-800 inline-flex items-center gap-1 disabled:opacity-50">
+            className="text-xs rounded-lg px-2.5 py-1.5 border border-white/12 hover:bg-white/10 inline-flex items-center gap-1 disabled:opacity-50">
             {gerandoResumo ? <Spinner className="h-3 w-3" /> : <RefreshCw className="h-3.5 w-3.5" />} {resumo ? 'Regenerar' : 'Gerar'}
           </button>
         </div>
@@ -106,7 +106,7 @@ export default function Relatorios() {
         <div className="flex gap-1.5 mb-3">
           {[0, -1, -2].map((o) => (
             <button key={o} onClick={() => gerarResumo(o)}
-              className={`text-xs rounded-full px-3 py-1.5 border transition-colors ${offset === o && resumo ? 'border-[#f6d353] bg-[#f6d353]/10 text-[#f6d353] font-semibold' : 'border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
+              className={`text-xs rounded-full px-3 py-1.5 border transition-colors ${offset === o && resumo ? 'border-[#f6d353] bg-[#f6d353]/10 text-[#f6d353] font-semibold' : 'border-white/12 text-slate-400 hover:bg-white/10'}`}>
               {o === 0 ? 'Esta semana' : o === -1 ? 'Semana passada' : 'Há 2 semanas'}
             </button>
           ))}
@@ -154,7 +154,7 @@ export default function Relatorios() {
         <div className="flex items-center justify-between mb-1">
           <p className="text-sm font-bold flex items-center gap-1.5"><Lightbulb className="h-4 w-4 text-[#f6d353]" /> Sugestões de economia</p>
           <button onClick={gerarSugestoes} disabled={gerandoSugestoes}
-            className="text-xs rounded-lg px-2.5 py-1.5 border border-slate-700 hover:bg-slate-800 inline-flex items-center gap-1 disabled:opacity-50">
+            className="text-xs rounded-lg px-2.5 py-1.5 border border-white/12 hover:bg-white/10 inline-flex items-center gap-1 disabled:opacity-50">
             {gerandoSugestoes ? <Spinner className="h-3 w-3" /> : <Sparkles className="h-3.5 w-3.5" />} {sugestoes ? 'Regenerar' : 'Gerar'}
           </button>
         </div>
@@ -183,7 +183,7 @@ export default function Relatorios() {
         {!gerandoSugestoes && sugestoes && (
           <div className="space-y-2.5">
             {sugestoes.sugestoes.map((s, i) => (
-              <div key={i} className="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
+              <div key={i} className="rounded-xl glass-soft border border-white/8 p-3">
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm font-semibold">{s.titulo}</p>
                   <span className="text-xs font-bold text-[#f6d353] whitespace-nowrap tabular-nums">
@@ -227,7 +227,7 @@ function RelatorioSemanal({ resumo, semanaDonut }) {
       </div>
 
       {/* texto da IA */}
-      <div className="rounded-xl bg-slate-800/50 border border-slate-800 p-3.5 mt-3">
+      <div className="rounded-xl glass-soft border border-white/10 p-3.5 mt-3">
         <p className="text-sm leading-relaxed text-slate-200">{resumo.texto}</p>
       </div>
 
@@ -281,7 +281,7 @@ function RelatorioSemanal({ resumo, semanaDonut }) {
 
 function Stat({ icon: Icon, label, valor, destaque }) {
   return (
-    <div className={`rounded-xl p-3 border ${destaque ? 'border-[#f6d353]/30 bg-[#f6d353]/5' : 'border-slate-800 bg-slate-900/60'}`}>
+    <div className={`rounded-xl p-3 border ${destaque ? 'border-[#f6d353]/30 bg-[#f6d353]/5' : 'border-white/10 glass-soft'}`}>
       <p className="text-[11px] text-slate-400 flex items-center gap-1"><Icon className="h-3.5 w-3.5" /> {label}</p>
       <p className={`text-lg font-extrabold tabular-nums mt-0.5 ${destaque ? 'text-[#f6d353]' : ''}`}>{valor}</p>
     </div>

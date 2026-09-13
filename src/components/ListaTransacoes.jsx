@@ -55,7 +55,7 @@ function Linha({ t, nomeDe, corDe, onEdit, onDelete }) {
   const cor = transferencia ? '#8f8f9e' : corDe(t.categoriaId)
 
   return (
-    <div className="group flex items-center gap-3 rounded-2xl bg-slate-900 border border-slate-800 pl-2.5 pr-2 py-2 hover:border-slate-700 transition-colors">
+    <div className="group flex items-center gap-3 rounded-2xl glass-soft border border-white/10 pl-2.5 pr-2 py-2 hover:border-white/20 transition-colors">
       {/* Avatar da categoria */}
       <span
         className="h-9 w-9 rounded-full grid place-items-center text-[15px] shrink-0"

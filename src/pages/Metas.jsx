@@ -90,7 +90,7 @@ export default function Metas() {
           </div>
         </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3" data-stagger>
           {ordenadas.map((g) => {
             const p = progressoMeta(g)
             return (
@@ -138,7 +138,7 @@ export default function Metas() {
                         <ArrowUpCircle className="h-4 w-4" /> Depositar
                       </button>
                       <button onClick={() => abrirDeposito(g, 'retirar')}
-                        className="flex-1 rounded-xl py-2 text-xs font-semibold border border-slate-700 text-slate-300 hover:bg-slate-800 inline-flex items-center justify-center gap-1.5">
+                        className="flex-1 rounded-xl py-2 text-xs font-semibold border border-white/12 text-slate-300 hover:bg-white/10 inline-flex items-center justify-center gap-1.5">
                         <ArrowDownCircle className="h-4 w-4" /> Retirar
                       </button>
                     </div>
