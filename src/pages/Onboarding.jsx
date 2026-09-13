@@ -8,7 +8,7 @@ import { Building2, Plus, X } from 'lucide-react'
 export default function Onboarding({ onConcluir }) {
   const nav = useNavigate()
   const [form, setForm] = useState({ rendaLiquida: '', diasTrabalhados: 22, horasPorDia: 8 })
-  const [bancos, setBancos] = useState([{ nome: 'Nubank', guardado: '' }, { nome: 'Banco do Brasil', guardado: '' }])
+  const [bancos, setBancos] = useState([{ nome: '', guardado: '' }])
   const [carregando, setCarregando] = useState(null)
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
@@ -68,7 +68,7 @@ export default function Onboarding({ onConcluir }) {
           <div className="space-y-2 mb-1">
             {bancos.map((b, i) => (
               <div key={i} className="flex gap-2">
-                <input className={`${inputCls} flex-1`} placeholder="Banco" value={b.nome} onChange={(e) => setBanco(i, 'nome', e.target.value)} />
+                <input className={`${inputCls} flex-1`} placeholder="Ex.: Nubank" value={b.nome} onChange={(e) => setBanco(i, 'nome', e.target.value)} />
                 <input className={`${inputCls} w-28`} inputMode="decimal" placeholder="R$" value={b.guardado} onChange={(e) => setBanco(i, 'guardado', e.target.value)} />
                 <button type="button" onClick={() => removeBanco(i)} className="px-1 text-slate-400 hover:text-rose-500" aria-label="Remover banco">
                   <X className="h-4 w-4" />

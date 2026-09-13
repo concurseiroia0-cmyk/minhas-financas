@@ -9,8 +9,6 @@ import { ConfirmarSugestao } from '../components/ConfirmarSugestao.jsx'
 import { Card, PageHeader, Spinner, inputCls, Badge } from '../components/ui.jsx'
 import { Sparkles, Send, Zap, Clock, Cpu } from 'lucide-react'
 
-const EXEMPLOS = ['ifood 45,90', 'uber 23,50 no cartão', 'netflix 39,90 crédito', 'salário 3200 pix', 'mercado 187,30 ontem']
-
 export default function QuickAdd() {
   const nav = useNavigate()
   const settings = useSettings()
@@ -78,15 +76,6 @@ export default function QuickAdd() {
           {carregando ? <Spinner /> : <Send className="h-5 w-5" />}
         </button>
       </form>
-
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        {EXEMPLOS.map((ex) => (
-          <button key={ex} onClick={() => setTexto(ex)}
-            className="text-xs rounded-full px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
-            {ex}
-          </button>
-        ))}
-      </div>
 
       {/* Como a frase será resolvida */}
       <Card className="p-4 mb-4">

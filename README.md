@@ -31,7 +31,7 @@ node scripts/gen-icons.js   # regenerar ícones PWA
 
 O push em `main` dispara o GitHub Actions, que builda com os secrets `VITE_OPENROUTER_KEY_B64` / `VITE_NVIDIA_KEY_B64` e publica na branch `gh-pages` (GitHub Pages). Para apontar ao seu repositório, ajuste o nome em `.github/workflows/deploy.yml` não é preciso — o `peaceiris/actions-gh-pages` usa o token padrão do repo.
 
-Na primeira abertura, escolha **Começar** (com seus bancos) ou **Explorar com dados de exemplo** (~100 dias de transações fictícias).
+Na primeira abertura, preencha o **Onboarding**: renda, dias/horas de trabalho e quanto tem guardado em cada banco — os dados são seus, nada vem preenchido.
 
 ## Telas
 
